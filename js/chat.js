@@ -60,14 +60,14 @@ let chat = {
 		msgText.classList.add("message");
 		msgText.innerHTML = message;
 
-		chatmsg.append(chatborder);
 
 		userdatadiv.append(profileIMG);
 		userdatadiv.append(username);
 		userdatadiv.append(badgeDiv);
 
-		chatmsg.append(userdatadiv);
-		chatmsg.append(msgText);
+		chatborder.append(userdatadiv);
+		chatborder.append(msgText);
+		chatmsg.append(chatborder);
 
 		this.chatbox.append(chatmsg);		
 	}

@@ -26,6 +26,7 @@ ComfyJS.onChat = (user, message, flags, self, extra) => {
 ComfyJS.onCommand = (user, command, message, flags, extra) => {
 	$$.log(user, command, message, flags, extra);
 
+	// chat -> displayer -> taskbar -> illubot & misc
 	if(flags.broadcaster == true ||
 	flags.mod == true ||
 	flags.vip == true) {
