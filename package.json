@@ -1,0 +1,14 @@
+{
+  "name": "Grats Stream Suite",
+  "version": "1.0.0",
+  "description": "grats custom stream overlay",
+  "main": "commands.js",
+  "scripts": {
+    "none": ""
+  },
+  "author": "Grat10borg",
+  "license": "ISC",
+  "dependencies": {
+    "comfy.js": "^1.1.16"
+  }
+}

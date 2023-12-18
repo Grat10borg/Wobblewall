@@ -1,0 +1,299 @@
+* {
+	margin: 0;
+	padding: 0;	
+}
+
+@font-face {
+  font-family: 'Atkinson-Hyperlegible';
+  src: url("../Fonts\\Atkinson-Hyperlegible-Regular-102.eot");
+  /* IE9 Compat Modes */
+  src: url("../Fonts\\Atkinson-Hyperlegible-Regular-102.eot?#iefix") format("embedded-opentype"), 
+  url("../Fonts\\Atkinson-Hyperlegible-Regular-102a.woff2") format("woff2"),
+  url("../Fonts\\Atkinson-Hyperlegible-Regular-102.woff") format("woff"), 
+  url("../Fonts\\Atkinson-Hyperlegible-Regular-102.ttf") format("truetype"), 
+  url("../Fonts\\Atkinson-Hyperlegible-Regular-102.svg#svgFontName") format("svg");
+  /* Legacy iOS */
+}
+
+:root {
+	--screen_width: 100vw;
+	--screen_height: 100vh;
+	
+
+
+	/* pallette */
+	
+	--main_color_lightest: #fffdff;
+	--main_color_lighter: #d6d8e5;
+	--main_color: #757da2;
+	--main_color_darker: #2d3043;
+	--main_color_darkest: #000016;
+
+	/*secondary colors should compliment the main color*/
+	--secondary_color: "";
+
+	/* desktop colors */ 
+
+	--chat_bg: rgba(18, 22, 59, 0.5);
+
+	--taskbar_bg: var(--main_color_darker);
+	--taskbar_seperator: var(--main_color); 
+}
+
+.top {
+	display: flex;
+}
+
+.display {
+	display: flex;
+	width: 100%;
+	height: calc(var(--screen_height) - 5vh);
+}
+
+.chat {
+	width: calc(var(--screen_width) - 80%);
+	height: calc(var(--screen_height) - 5vh);
+	background: var(--chat_bg);
+	display: flex;
+  	-webkit-box-orient: vertical;
+  	-webkit-box-direction: reverse;
+  	flex-direction: column-reverse;
+
+	/*chat msg disappears after filling enough*/
+	overflow-y: hidden;
+}
+
+.chat ul {
+	list-style-type: none;
+ 	list-style-position: outside;
+}
+
+.chat li {
+	background-color: rgba(18, 22, 59, 0.8);
+  	padding: 15px 5px;
+  	margin-top: 5px;
+}
+
+.chat li .ChatBorder {
+	color: #c1d9f2;
+	border-left: 5px solid;
+	border-radius: 5px 0px 0px 5px;
+	padding-left: 10px;	
+}
+
+.chat li .UserProfileLine {
+  margin-bottom: 10px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.chat li .UserProfileLine .ProfilePicture {
+	image-rendering: optimizeQuality;
+  display: inline-block;
+  margin-right: 10px;
+  pointer-events: none;
+  border-radius: 100%;
+  width: 32px;
+}
+
+.chat li .UserProfileLine .Username {
+	display: inline-block;
+	font-size: 23px;
+	color: #c1d9f2;
+}
+
+.chat li UserProfileLine .BadgeLine .Badge {
+  margin-left: 2px;
+  margin-right: 2px;
+  image-rendering: optimizeQuality;
+  width: 24;
+  max-width: 76px;
+  pointer-events: none;
+}
+
+.chat li .Message {
+	word-wrap: break-word;
+	font-size: 21px;
+	font-family: 'Atkinson-Hyperlegible',"VT323", Fallback, monospace;	
+	color: #c1d9f2;
+}
+
+.chat li .Message img {
+	width: 28px;
+	display: inline-block;
+}
+
+.chat li .Message .imgEmoteBig {
+	width: 64px;
+	display: inline-block;
+}
+
+.chat li .Message .ClipThumbnail {
+	width: 364px;
+}
+
+.chat li .Message a {
+	color: #0077ff;
+	text-decoration: none;
+}
+
+.chat li:nth-child(odd) {
+	background-color: rgba(33, 39, 95, 0.8);
+}
+
+.chat li:last-of-type {
+	 -webkit-animation-name: slide-in-left;
+          animation-name: slide-in-left;
+  -webkit-animation-duration: 0.15s;
+          animation-duration: 0.15s;
+  -webkit-animation-timing-function: ease-in;
+          animation-timing-function: ease-in;
+}
+
+@-webkit-keyframes slide-in-left {
+  from {
+    -webkit-transform: translateX(400px);
+            transform: translateX(400px);
+    opacity: 0;
+  }
+  to {
+    -webkit-transform: translateX(0);
+            transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slide-in-left {
+  from {
+    -webkit-transform: translateX(400px);
+            transform: translateX(400px);
+    opacity: 0;
+  }
+  to {
+    -webkit-transform: translateX(0);
+            transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.taskbar {
+	width: var(--screen_width);
+
+	height: calc(var(--screen_height) - 95vh); /* = 5vh */
+	background: var(--taskbar_bg);
+}
+
+.taskbar > {
+	display: block;
+}
+
+.taskbar .spacer {
+	height: 100%;
+	margin: 0 3vh 0 3vh;
+}
+
+	/* creates a line */
+.taskbar .seperator {
+	width: 5px;
+	height: 100%;
+	margin: 0 1vh 0 1vh;
+	border-radius: 15px;
+	background: var(--taskbar_seperator);
+}
+
+	/*turn overlay chat only*/
+@media screen and (max-width: 700px) {
+	.chat { 
+		width: 100vw;
+		height: 100vh;
+	}
+	.display {
+		display: none;
+	}
+	.taskbar {
+		display: none;
+	}
+}
+	
+
+.HEXFF0000 {
+  color: #ff0000 !important;
+}
+
+.HEX0000FF {
+  color: #0077ff !important;
+}
+
+.HEX008000 {
+  color: #008000 !important;
+}
+
+.HEXB22222 {
+  color: #b22222 !important;
+}
+
+.HEXFF7F50 {
+  color: #ff7f50 !important;
+}
+
+.HEX9ACD32 {
+  color: #9acd32 !important;
+}
+
+.HEXFF4500 {
+  color: #ff4500 !important;
+}
+
+.HEX2E8B57 {
+  color: #2e8b57 !important;
+}
+
+.HEXDAA520 {
+  color: #daa520 !important;
+}
+
+.HEXD2691E {
+  color: #d2691e !important;
+}
+
+.HEX5F9EA0 {
+  color: #5f9ea0 !important;
+}
+
+.HEX1E90FF {
+  color: #1e90ff !important;
+}
+
+.HEXFF69B4 {
+  color: #ff69b4 !important;
+}
+
+.HEX8A2BE2 {
+  color: #8a2be2 !important;
+}
+
+.HEX00FF7F {
+  color: #00ff7f !important;
+}
+
+/*hide chat unhide chat css*/
+.chat-hide {
+    transform: translateX(-100%);
+
+	/* lets displayer take up full width*/
+	transition: linear 2s;
+	width: 0;
+}
+.chat-show {
+    transform: translateX(0px);
+	transition: transform 2s;
+	transition: width 2s;
+}
+
+.display-fill {
+	width: 100%;
+}
