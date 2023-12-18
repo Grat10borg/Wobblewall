@@ -10,9 +10,9 @@ make: $.createElement.bind($),
 query: $.querySelector.bind($),
 query_all: $.querySelectorAll.bind($),
 
-// custome methods bellow this
-// none yet!
+// custome methods below this
 wait: wait.bind($),
+api: api.bind($), 
 
 // just here to help me out when working.
 log: console.log,
@@ -25,4 +25,8 @@ function wait(ms) {
   while (end < start + ms) {
     end = new Date().getTime();
   }
+}
+
+function api(request) {
+
 }
