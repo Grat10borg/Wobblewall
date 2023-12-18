@@ -5,13 +5,13 @@
 
 @font-face {
   font-family: 'Atkinson-Hyperlegible';
-  src: url("../Fonts\\Atkinson-Hyperlegible-Regular-102.eot");
+  src: url("fonts/Atkinson-Hyperlegible-Regular-102.eot");
   /* IE9 Compat Modes */
-  src: url("../Fonts\\Atkinson-Hyperlegible-Regular-102.eot?#iefix") format("embedded-opentype"), 
-  url("../Fonts\\Atkinson-Hyperlegible-Regular-102a.woff2") format("woff2"),
-  url("../Fonts\\Atkinson-Hyperlegible-Regular-102.woff") format("woff"), 
-  url("../Fonts\\Atkinson-Hyperlegible-Regular-102.ttf") format("truetype"), 
-  url("../Fonts\\Atkinson-Hyperlegible-Regular-102.svg#svgFontName") format("svg");
+  src: url("fonts/Atkinson-Hyperlegible-Regular-102.eot?#iefix") format("embedded-opentype"), 
+  url("fonts/Atkinson-Hyperlegible-Regular-102a.woff2") format("woff2"),
+  url("fonts/Atkinson-Hyperlegible-Regular-102.woff") format("woff"), 
+  url("fonts/Atkinson-Hyperlegible-Regular-102.ttf") format("truetype"), 
+  url("fonts/Atkinson-Hyperlegible-Regular-102.svg#svgFontName") format("svg");
   /* Legacy iOS */
 }
 
@@ -46,7 +46,7 @@
 
 .display {
 	display: flex;
-	width: 100%;
+	width: calc(var(--screen_width) - 20%);
 	height: calc(var(--screen_height) - 5vh);
 }
 
@@ -74,14 +74,14 @@
   	margin-top: 5px;
 }
 
-.chat li .ChatBorder {
+.chat li .chat-border {
 	color: #c1d9f2;
 	border-left: 5px solid;
 	border-radius: 5px 0px 0px 5px;
 	padding-left: 10px;	
 }
 
-.chat li .UserProfileLine {
+.chat li .user-data-line {
   margin-bottom: 10px;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -91,8 +91,8 @@
           align-items: center;
 }
 
-.chat li .UserProfileLine .ProfilePicture {
-	image-rendering: optimizeQuality;
+.chat li .user-data-line .profile {
+  image-rendering: optimizeQuality;
   display: inline-block;
   margin-right: 10px;
   pointer-events: none;
@@ -100,13 +100,13 @@
   width: 32px;
 }
 
-.chat li .UserProfileLine .Username {
+.chat li .user-data-line .username {
 	display: inline-block;
 	font-size: 23px;
 	color: #c1d9f2;
 }
 
-.chat li UserProfileLine .BadgeLine .Badge {
+.chat li .user-data-line .badges .badge {
   margin-left: 2px;
   margin-right: 2px;
   image-rendering: optimizeQuality;
@@ -115,28 +115,28 @@
   pointer-events: none;
 }
 
-.chat li .Message {
+.chat li .message {
 	word-wrap: break-word;
 	font-size: 21px;
 	font-family: 'Atkinson-Hyperlegible',"VT323", Fallback, monospace;	
 	color: #c1d9f2;
 }
 
-.chat li .Message img {
+.chat li .message img {
 	width: 28px;
 	display: inline-block;
 }
 
-.chat li .Message .imgEmoteBig {
+.chat li .message .imgemotebig {
 	width: 64px;
 	display: inline-block;
 }
 
-.chat li .Message .ClipThumbnail {
+.chat li .message .clip-thumbnail {
 	width: 364px;
 }
 
-.chat li .Message a {
+.chat li .message a {
 	color: #0077ff;
 	text-decoration: none;
 }
@@ -156,8 +156,8 @@
 
 @-webkit-keyframes slide-in-left {
   from {
-    -webkit-transform: translateX(400px);
-            transform: translateX(400px);
+    -webkit-transform: translateX(-400px);
+            transform: translateX(-400px);
     opacity: 0;
   }
   to {
@@ -169,8 +169,8 @@
 
 @keyframes slide-in-left {
   from {
-    -webkit-transform: translateX(400px);
-            transform: translateX(400px);
+    -webkit-transform: translateX(-400px);
+            transform: translateX(-400px);
     opacity: 0;
   }
   to {
@@ -294,6 +294,21 @@
 	transition: width 2s;
 }
 
+/* animation that plays when clearing chat*/
+.chat-clear {
+	transition: ease 4s;
+	transform-origin: top;
+	/*it doesn't scroll all the way of screen unless this*/
+	transform: translateY(125%);
+}
+.chat-clear p, .chat-clear img {
+	opacity: 0;
+	transition: opacity 2s;
+}
+
+/* tell displayer to fill newly given space when chat is hidden*/
 .display-fill {
+	transition-duration: 1s;
+	transition: width;
 	width: 100%;
 }

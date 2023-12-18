@@ -1,7 +1,9 @@
 "use strict";
 
 let settings = {
-		
+	userprofiles: [],
+	clip_count: 0,
+	word_count: 0,
 };
 
 /*	this file needs: dom.js & config.js
@@ -16,6 +18,7 @@ ComfyJS.Init(config.BOTLOGIN, config.BOTOAUTH, config.TWITCH_LOGIN);
 // runs everytime someone chats
 ComfyJS.onChat = (user, message, flags, self, extra) => {
 	console.log(message);	
+	if(chat.show == true) // only update chat if chat is shown.
 	chat.addMsg(message, user, flags, self, extra);
 };
 
@@ -36,7 +39,6 @@ ComfyJS.onCommand = (user, command, message, flags, extra) => {
 			// clear chat
 			case "clear":
 				chat.clear();
-            	ComfyJS.Say("Cleared On-Screen Chatbox! 🧹🤖");
 				break;
 		}
 	}
