@@ -25,7 +25,7 @@ If applicable, add screenshots to help explain your problem.
 
 **Desktop (please complete the following information):**
  - Browser [e.g. chrome, safari]
- - H.O.T Version [e.g. 22]
+ - Wobblewall Version [e.g. 22]
  - Other applicable information 
 
 **Additional context**
