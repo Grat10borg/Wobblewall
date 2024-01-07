@@ -46,8 +46,18 @@ let chat = {
 		let userdatadiv = $$.make("div");
 		userdatadiv.classList.add("user-data-line");
 
+		// gather profile image if not stored in settings
 		let profileIMG = $$.make("img");
 		profileIMG.classList.add("profile");
+		if(settings.username.indexOf(user) != -1) {
+			// gather saved profile src
+			profileIMG.src = settings.userprofiles[
+				settings.username.indexOf(user)];
+		}
+		else {
+			// fetch profile src from Twitch API
+			profileIMG.src = settings.fetchProfile(user);
+		}
 
 		let username = $$.make("p");
 		username.classList.add("username");
