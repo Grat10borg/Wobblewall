@@ -32,21 +32,16 @@ function wait(ms) {
 function err(msg) {
 	console.error(msg);
 	ComfyJS.say(msg);
-}
 
-/*	simple API request function
- *
- *	pass request string and if it should use Twitch auth
- *	needs to be validated first
- * */
-async function api(request, twitch) {
-  if (settings.Tconnect == false)
-	$$.api_approve();
-  if (twitch == true) {
-    const respon = await fetch(`${request}`, {
+// Http request function specify Twitch if using twitch tokens
+async function api(http, isTwitch) {
+	console.log(http, isTwitch)
+  if (isTwitch == true || isTwitch != undefined) {
+    const respon = await fetch(`${http}`, {
       headers: {
         Authorization: "Bearer " + config.MY_API_TOKEN,
-        "Client-ID": settings.client_id, 
+        "Client-ID": settings.api_clientid, // can also use Tclient_id. 
+	//!! comment out Tclient if not being used !!
       },
     })
       .then((respon) => respon.json())
@@ -61,7 +56,7 @@ async function api(request, twitch) {
       });
     return respon;
   } else {
-    const respon = await fetch(`${request}`)
+    const respon = await fetch(`${http}`)
       .then((respon) => respon.json())
       .then((respon) => {
         // Return Response on Success
