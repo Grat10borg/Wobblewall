@@ -4,6 +4,9 @@ let settings = {
 	userprofiles: [],
 	clip_count: 0,
 	word_count: 0,
+	Tconnect: false, // if twitch is connected
+	broadcaster_id: "",
+	client_id: "",
 };
 
 /*	this file needs: dom.js & config.js
@@ -14,6 +17,7 @@ let settings = {
 
 // init ComfyJS
 ComfyJS.Init(config.BOTLOGIN, config.BOTOAUTH, config.TWITCH_LOGIN);
+$$.api_approve(); // check if twitch token is acceptable
 
 // runs everytime someone chats
 ComfyJS.onChat = (user, message, flags, self, extra) => {
@@ -40,6 +44,10 @@ ComfyJS.onCommand = (user, command, message, flags, extra) => {
 			// clear chat
 			case "clear":
 				chat.clear();
+				break;
+			// make clip & post in chat 
+			case "clip":
+				illu.clip();
 				break;
 		}
 	}
