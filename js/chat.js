@@ -36,7 +36,7 @@ let chat = {
 		});
 	},
 	// add a chat msg to the bottom of the chat
-	addMsg: function(message, user, flags, self, extra) {
+	addMsg: async function(message, user, flags, self, extra) {
 		$$.log(this.chatbox);
 		// list item containing chat elements
 		let chatmsg = $$.make("li");
@@ -49,15 +49,16 @@ let chat = {
 		// gather profile image if not stored in settings
 		let profileIMG = $$.make("img");
 		profileIMG.classList.add("profile");
-		if(settings.username.indexOf(user) != -1) {
-			// gather saved profile src
+		// gather saved profile src
+		
+		if(settings.userprofiles[settings.username.indexOf(user)] != -1)
+		{
+			// note fix profile pictures being undefined
 			profileIMG.src = settings.userprofiles[
-				settings.username.indexOf(user)];
+			settings.username.indexOf(user)];
 		}
-		else {
-			// fetch profile src from Twitch API
-			profileIMG.src = settings.fetchProfile(user);
-		}
+
+		console.log(settings.userprofiles[settings.username.indexOf(user)]);
 
 		let username = $$.make("p");
 		username.classList.add("username");

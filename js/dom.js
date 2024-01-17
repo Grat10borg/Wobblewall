@@ -32,16 +32,15 @@ function wait(ms) {
 function err(msg) {
 	console.error(msg);
 	ComfyJS.say(msg);
+}
 
 // Http request function specify Twitch if using twitch tokens
 async function api(http, isTwitch) {
-	console.log(http, isTwitch)
   if (isTwitch == true || isTwitch != undefined) {
     const respon = await fetch(`${http}`, {
       headers: {
         Authorization: "Bearer " + config.MY_API_TOKEN,
-        "Client-ID": settings.api_clientid, // can also use Tclient_id. 
-	//!! comment out Tclient if not being used !!
+        "Client-ID": settings.client_id, 
       },
     })
       .then((respon) => respon.json())
@@ -87,10 +86,15 @@ async function api_approve() {
           $$.err("Unexpected output with a status");
           return 0;
         }
-        if (resp.client_id) {
-          settings.client_id = resp.client_id;
+        if (resp) {
+          settings.client_id = resp.client_id; // client ID
+	  settings.broadcaster_login = resp.login; // username
+	  settings.broadcaster_id = resp.user_id; // user ID
+	  settings.Tconnect = true; // twitch connected.
 
-          $$.log("Token Validated Sucessfully ..." + resp.message);
+          $$.log("Token Validated Sucessfully ... logged into "
+          + resp.login);
+	 
           return 1;
         }
         $$.err("unexpected Output ..." + resp.message);
