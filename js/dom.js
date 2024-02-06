@@ -47,6 +47,9 @@ async function api_valid() {
           return 0;
         }
         if (resp.client_id) {
+		   $$.log(resp);
+		  settings.login = resp.login;
+		  settings.broadcaster_id = resp.user_id;
           settings.api_clientid = resp.client_id;
 		  settings.api_valid = true;
           return 1;

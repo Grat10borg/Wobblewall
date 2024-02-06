@@ -4,9 +4,12 @@ $$.api_valid(); // validate twitch token
 
 // contains basic settings and functions about user/stream info
 let settings = {
-	token_valid: false, // by default false becomes true when validated
+	api_valid: false, // by default false becomes true when validated
 	api_clientid: "", // twitch clientId needed for API calls
+	broadcaster_id: "", // twitch broadcaster, used in API calls
+	login: "", // sometimes used in API calls
 
+	// data
 	username: [],
 	userprofiles: [],
 	clip_count: 0, // clips clipped
@@ -78,7 +81,7 @@ ComfyJS.onCommand = (user, command, message, flags, extra) => {
 		approved = true;
 	}
 		// approved users commands
-		
+		$$.log(command);	
 		switch(command) {
 			// toggles hiding & unhiding chat
 			case "chat":
@@ -99,6 +102,12 @@ ComfyJS.onCommand = (user, command, message, flags, extra) => {
 			case "play":
 				if(approved)
 				disp.play(message);
+				break;
+			// clip your/or specifed channel 30/27~ sec back
+			case "clip": 
+				// note: make command also able to specify channel 
+				if(approved)
+				illu.clip();
 				break;
 		}
 	}
