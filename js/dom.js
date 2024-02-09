@@ -13,9 +13,9 @@ query_all: $.querySelectorAll.bind($),
 // custome methods below this
 wait: wait.bind($),
 api: api.bind($), 
-api_valid: api_valid.bind($), 
+api_approve: api_approve.bind($), // validate twitch token
 
-// just here to help me out when working.
+err: err.bind($),
 log: console.log,
 }
 
@@ -28,6 +28,7 @@ function wait(ms) {
   }
 }
 
+<<<<<<< HEAD
 // calls Twitch API to validate token returns 0 on fail 1 on success
 async function api_valid() {
   if (config.MY_API_TOKEN != undefined &&
@@ -64,18 +65,21 @@ async function api_valid() {
   } else {
     return 0;
   }
+=======
+// logs and says a message 
+function err(msg) {
+	console.error(msg);
+	ComfyJS.say(msg);
+>>>>>>> 025fcb63629b0fc68d61687e838e150b082eb1ff
 }
-//#endregion
 
 // Http request function specify Twitch if using twitch tokens
 async function api(http, isTwitch) {
-	console.log(http, isTwitch)
   if (isTwitch == true || isTwitch != undefined) {
     const respon = await fetch(`${http}`, {
       headers: {
         Authorization: "Bearer " + config.MY_API_TOKEN,
-        "Client-ID": settings.api_clientid, // can also use Tclient_id. 
-	//!! comment out Tclient if not being used !!
+        "Client-ID": settings.client_id, 
       },
     })
       .then((respon) => respon.json())
@@ -104,3 +108,41 @@ async function api(http, isTwitch) {
     return respon;
   }
 }
+
+async function api_approve() {
+    await fetch("https://id.twitch.tv/oauth2/validate", {
+      headers: {
+        Authorization: "Bearer " + config.MY_API_TOKEN,
+      },
+    })
+      .then((resp) => resp.json())
+      .then((resp) => {
+        if (resp.status) {
+          if (resp.status == 401) {
+            $$.err("This api token is invalid ... " + resp.message);
+            return 0;
+          }
+          $$.err("Unexpected output with a status");
+          return 0;
+        }
+        if (resp) {
+          settings.client_id = resp.client_id; // client ID
+	  settings.broadcaster_login = resp.login; // username
+	  settings.broadcaster_id = resp.user_id; // user ID
+	  settings.Tconnect = true; // twitch connected.
+
+          $$.log("Token Validated Sucessfully ... logged into "
+          + resp.login);
+	 
+          return 1;
+        }
+        $$.err("unexpected Output ..." + resp.message);
+        return 0;
+      })
+      .catch((err) => {
+        $$.err(err);
+        return 0;
+      });
+ return 1;
+}
+//#endregion

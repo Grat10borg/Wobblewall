@@ -1,6 +1,6 @@
 "use strict";
 
-$$.api_valid(); // validate twitch token
+$$.api_approve(); // validate twitch token
 
 // contains basic settings and functions about user/stream info
 let settings = {
@@ -18,26 +18,35 @@ let settings = {
 	// counters
 	clip_count: 0, // clips clipped
 	mark_count: 0, // stream markers marked
-	word_count: 0, // specific words said
+	word_count: 0,
+
+	Tconnect: false, // if twitch is connected
+	broadcaster_id: "",
+	broadcaster_login: "",
+	client_id: "",
 
 	// fetch profile pictures from the twitch api
 	fetchProfile: async function(username) {
+		console.log(settings);
 		this.username.push(username); // add new username
 
 	// request profile picture
     	let request = await $$.api(
-		"https://api.twitch.tv/helix/users?login=" + username,true);
+	"https://api.twitch.tv/helix/users?login="
+		+ username,true);
 
 		console.log(request);
 
 		let profileSRC = request["data"][0]["profile_image_url"];
-		
-		console.log(this.userprofiles);
+		console.log(profileSRC);
 
 	// save profiles for later use
 		this.userprofiles.push(profileSRC); 
 
 	//	 return profile src
+		console.log(this.userprofiles);
+
+		// return profile src
 		return profileSRC;
 	},
 
@@ -80,12 +89,20 @@ ComfyJS.onChat = (user, message, flags, self, extra) => {
 	settings.users.push(user_log);
 	$$.log(user_log);
 
+	// cache user details
+	if (settings.username.indexOf(user) == -1)
+		settings.fetchProfile(user);
+
+	console.log(message);	
 	if(chat.show == true) // only update chat if chat is shown.
 	chat.addMsg(message, user, flags, self, extra);
 };
 
 // runs everytime someone writes a command (!<command>)
 ComfyJS.onCommand = (user, command, message, flags, extra) => {
+	// cache user details
+	if (settings.username.indexOf(user) == -1)
+		settings.fetchProfile(user);
 	$$.log(user, command, message, flags, extra);
 
 	// chat -> displayer -> taskbar -> illubot & misc
