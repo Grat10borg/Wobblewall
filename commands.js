@@ -10,8 +10,12 @@ let settings = {
 	login: "", // sometimes used in API calls
 
 	// data
+	users: [], // contains users data
+
 	username: [],
 	userprofiles: [],
+
+	// counters
 	clip_count: 0, // clips clipped
 	mark_count: 0, // stream markers marked
 	word_count: 0, // specific words said
@@ -20,7 +24,7 @@ let settings = {
 	fetchProfile: async function(username) {
 		this.username.push(username); // add new username
 
-		// request profile picture
+	// request profile picture
     	let request = await $$.api(
 		"https://api.twitch.tv/helix/users?login=" + username,true);
 
@@ -30,10 +34,10 @@ let settings = {
 		
 		console.log(this.userprofiles);
 
-		// save profiles for later use
+	// save profiles for later use
 		this.userprofiles.push(profileSRC); 
 
-		// return profile src
+	//	 return profile src
 		return profileSRC;
 	},
 
@@ -42,7 +46,7 @@ let settings = {
 		this.userprofiles = []; // empty array
 		this.username.forEach(async function(username){
 			// request profile picture
-    		let request = await $$.api(
+    	let request = await $$.api(
 		"https://api.twitch.tv/helix/users?login=" + username,true);
 			let profileSRC = request["data"][0]["profile_image_url"];
 		
@@ -64,7 +68,18 @@ ComfyJS.Init(config.BOTLOGIN, config.BOTOAUTH, config.TWITCH_LOGIN);
 
 // runs everytime someone chats
 ComfyJS.onChat = (user, message, flags, self, extra) => {
-	console.log(message);	
+	console.log(user, flags, self,  extra);	
+
+	// log user data
+	let user_log = {
+		"profile_img": settings.fetchProfile(self.channel),
+		"login": self.channel,
+		"color": self.userColor
+	}
+
+	settings.users.push(user_log);
+	$$.log(user_log);
+
 	if(chat.show == true) // only update chat if chat is shown.
 	chat.addMsg(message, user, flags, self, extra);
 };
@@ -108,6 +123,11 @@ ComfyJS.onCommand = (user, command, message, flags, extra) => {
 				// note: make command also able to specify channel 
 				if(approved)
 				illu.clip();
+				break;
+			// mark your stream with a marker
+			case "mark":
+				if(approved)
+				illu.mark(); // markiplier
 				break;
 		}
 	}
