@@ -47,9 +47,18 @@ function clear() {
 } 
 
 
-async function addMsg(message, user, flags, self, extra) {
-	$$.log(chat.chatbox);
-	// list item containing chat elements
+async function addMsg(message, user) {
+	
+	console.log(settings.usernames)
+	console.log(user)
+	console.log(settings.usernames.indexOf(user));
+
+
+	let userdata = settings.users[settings.usernames.indexOf(user)];
+	
+	console.log(userdata);
+
+	// chat setup
 	let chatmsg = $$.make("li");
 	let chatborder = $$.make("div");
 	chatborder.classList.add("chat-border");
@@ -57,19 +66,7 @@ async function addMsg(message, user, flags, self, extra) {
 	let userdatadiv = $$.make("div");
 	userdatadiv.classList.add("user-data-line");
 
-	// gather profile image if not stored in settings
-	let profileIMG = $$.make("img");
-	profileIMG.classList.add("profile");
-	// gather saved profile src
 	
-	if(settings.userprofiles[settings.username.indexOf(user)] != -1)
-	{
-		// note fix profile pictures being undefined
-		profileIMG.src = settings.userprofiles[
-		settings.username.indexOf(user)];
-	}
-
-	console.log(settings.userprofiles[settings.username.indexOf(user)]);
 
 	let username = $$.make("p");
 	username.classList.add("username");

@@ -11,9 +11,7 @@ let settings = {
 
 	// data
 	users: [], // contains users data
-
-	username: [],
-	userprofiles: [],
+	usernames: [], // contains only usernames for quick access
 
 	// counters
 	clip_count: 0, // clips clipped
@@ -26,43 +24,43 @@ let settings = {
 	client_id: "",
 
 	// fetch profile pictures from the twitch api
-	fetchProfile: async function(username) {
-		console.log(settings);
-		this.username.push(username); // add new username
+	fetchProfile: async function(username, flags, extra) {
 
-	// request profile picture
-    	let request = await $$.api(
-	"https://api.twitch.tv/helix/users?login="
-		+ username,true);
+	 // request profile picture
+   	 let request = await $$.api(
+	 "https://api.twitch.tv/helix/users?login="
+	 + username,true);
 
-		console.log(request);
+	 // make shorter "filepath" version 
+	 let res = request["data"][0];
 
-		let profileSRC = request["data"][0]["profile_image_url"];
-		console.log(profileSRC);
+	 // log user data
+	 let user_log = {
+		"profile_img": res["profile_image_url"],
+		"offline_img": res["offline_image_url"],
+		"displayName": extra.displayName,
+		"desc": res["description"],
+		"color": extra.userColor,
+		"login": extra.channel,
+		"id": extra.userId,
 
-	// save profiles for later use
-		this.userprofiles.push(profileSRC); 
+		// status
+		"broadcaster_type": res["broadcaster_type"],
+		"badges": extra.userBadges,
+		"extra": extra,
+		"flags": flags,
+	}
 
-	//	 return profile src
-		console.log(this.userprofiles);
+	settings.users.push(user_log);     // save userdata for later use
+	settings.usernames.push(username); // save username for quick access
 
-		// return profile src
-		return profileSRC;
+	// return profile src
+	return user_log;
 	},
 
 	// refresh all profile pictures, should be ran ever hour~ish
 	refreshProfiles: function() {
-		this.userprofiles = []; // empty array
-		this.username.forEach(async function(username){
-			// request profile picture
-    	let request = await $$.api(
-		"https://api.twitch.tv/helix/users?login=" + username,true);
-			let profileSRC = request["data"][0]["profile_image_url"];
 		
-			// save profiles for later use
-			this.userprofiles.push(profileSRC); 
-		});
-
 	}
 };
 
@@ -79,30 +77,27 @@ ComfyJS.Init(config.BOTLOGIN, config.BOTOAUTH, config.TWITCH_LOGIN);
 ComfyJS.onChat = (user, message, flags, self, extra) => {
 	console.log(user, flags, self,  extra);	
 
-	// log user data
-	let user_log = {
-		"profile_img": settings.fetchProfile(user),
-		"login": user,
-		"color": self.userColor
-	}
+	//let channelInfo = settings.fetchProfile(user, flags, extra);
+	//console.log(channelInfo);
 
-	settings.users.push(user_log);
-	$$.log(user_log);
+
+	//settings.users.push(user_log);
+	//$$.log(user_log);
 
 	// cache user details
-	if (settings.username.indexOf(user) == -1)
-		settings.fetchProfile(user);
+	if (settings.usernames.indexOf(user) == -1)
+		settings.fetchProfile(user, flags, extra);
 
-	console.log(chat);	
+	//console.log(chat);	
 	if(chat.show == true) // only update chat if chat is shown.
-	chat.addMsg(message, user, flags, self, extra);
+	chat.addMsg(message, user);
 };
 
 // runs everytime someone writes a command (!<command>)
 ComfyJS.onCommand = (user, command, message, flags, extra) => {
 	// cache user details
-	if (settings.username.indexOf(user) == -1)
-		settings.fetchProfile(user);
+	if (settings.usernames.indexOf(user) == -1)
+		settings.fetchProfile(user, flags,  extra);
 	$$.log(user, command, message, flags, extra);
 
 	// chat -> displayer -> taskbar -> illubot & misc
