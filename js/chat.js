@@ -17,19 +17,19 @@ let chat = {
 
 // toggles chat visability
 function toggle() {
-	if (this.show == true) {
+	if (chat.show == true) {
 		$$.log("hiding chat...");	
-		this.show = false;
-		this.elem.classList.remove("chat-show");
+		chat.show = false;
+		chat.elem.classList.remove("chat-show");
 	 $$.id("displayer").classList.add("display-fill");
-		this.elem.classList.add("chat-hide");
+		chat.elem.classList.add("chat-hide");
 	}
 	else {
 		$$.log("showing chat..");
-		this.show = true;
+		chat.show = true;
 	 $$.id("displayer").classList.remove("display-fill");
-		this.elem.classList.remove("chat-hide");
-		this.elem.classList.add("chat-show");
+		chat.elem.classList.remove("chat-hide");
+		chat.elem.classList.add("chat-show");
 	}
 }
 

@@ -48,17 +48,17 @@ function trimLink(link) {
 
 function toggle() {
 	console.log(this.displayer);
-	if (this.show == true) {
+	if (disp.show == true) {
 		$$.log("hiding displayer...");	
-		this.show = false;
-		this.displayer.classList.remove("disp-show");
-		this.displayer.classList.add("disp-hide");
+		disp.show = false;
+		disp.displayer.classList.remove("disp-show");
+		disp.displayer.classList.add("disp-hide");
 	}
 	else {
 		$$.log("showing displayer...");
-		this.show = true;
-		this.displayer.classList.remove("disp-hide");
-		this.displayer.classList.add("disp-show");
+		disp.show = true;
+		disp.displayer.classList.remove("disp-hide");
+		disp.displayer.classList.add("disp-show");
 	}
 }
 
