@@ -87,7 +87,7 @@ ComfyJS.onChat = (user, message, flags, self, extra) => {
 	//$$.log(user_log);
 
 	// cache user details
-	if (settings.usernames.indexOf(user) == -1)
+	if (settings.usernames.indexOf(user) == -1) {
 		if (chat.show == true) {
 			// initialize a varible fetch the async,
 			// then make an embeded function that then calls-
@@ -98,13 +98,14 @@ ComfyJS.onChat = (user, message, flags, self, extra) => {
 		else  
 		settings.fetchProfile(user, flags, extra)
 		// if theres already a user cached
-		else  {
-		if (chat.show == true) {
-			userinfo = settings.users[settings.usernames.indexOf(user)]
-			// only update chat if chat is shown.
-			chat.addMsg(message, userinfo);
-		}	
 	}
+	else  {
+	$$.log("in user exists")
+	if (chat.show == true) {
+		let userinfo = settings.users[settings.usernames.indexOf(user)]
+		// only update chat if chat is shown.
+		chat.addMsg(message, userinfo);
+	}	
 };
 
 // runs everytime someone writes a command (!<command>)
@@ -157,5 +158,5 @@ ComfyJS.onCommand = (user, command, message, flags, extra) => {
 				break;
 		}
 	}
-
+}
 
