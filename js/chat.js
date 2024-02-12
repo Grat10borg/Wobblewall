@@ -49,14 +49,7 @@ function clear() {
 
 async function addMsg(message, user) {
 	
-	console.log(settings.usernames)
-	console.log(user)
-	console.log(settings.usernames.indexOf(user));
-
-
-	let userdata = settings.users[settings.usernames.indexOf(user)];
-	
-	console.log(userdata);
+	console.log(user);
 
 	// chat setup
 	let chatmsg = $$.make("li");
@@ -67,10 +60,17 @@ async function addMsg(message, user) {
 	userdatadiv.classList.add("user-data-line");
 
 	
+	let profileIMG = $$.make("img");
+	profileIMG.src = user.profile_img;
+
+	// should be done by CSS
+	profileIMG.width = 45;
+	profileIMG.height = 45;
+	profileIMG.style = "padding: 5px; border-radius: 15px"
 
 	let username = $$.make("p");
 	username.classList.add("username");
-	username.innerHTML = user;
+	username.innerHTML = user.displayName;
 
 	let badgeDiv = $$.make("div");
 	badgeDiv.classList.add("badges");

@@ -29,7 +29,7 @@ let settings = {
 	 // request profile picture
    	 let request = await $$.api(
 	 "https://api.twitch.tv/helix/users?login="
-	 + username,true);
+	 + username,true)
 
 	 // make shorter "filepath" version 
 	 let res = request["data"][0];
@@ -54,6 +54,8 @@ let settings = {
 	settings.users.push(user_log);     // save userdata for later use
 	settings.usernames.push(username); // save username for quick access
 
+	
+	$$.log(settings.usernames.indexOf(username));
 	// return profile src
 	return user_log;
 	},
@@ -86,11 +88,23 @@ ComfyJS.onChat = (user, message, flags, self, extra) => {
 
 	// cache user details
 	if (settings.usernames.indexOf(user) == -1)
-		settings.fetchProfile(user, flags, extra);
-
-	//console.log(chat);	
-	if(chat.show == true) // only update chat if chat is shown.
-	chat.addMsg(message, user);
+		if (chat.show == true) {
+			// initialize a varible fetch the async,
+			// then make an embeded function that then calls-
+			// the add message thing i think..
+			let userinfo = settings.fetchProfile(user, flags, extra)
+				.then((userinfo) => chat.addMsg(message, userinfo))
+		}
+		else  
+		settings.fetchProfile(user, flags, extra)
+		// if theres already a user cached
+		else  {
+		if (chat.show == true) {
+			userinfo = settings.users[settings.usernames.indexOf(user)]
+			// only update chat if chat is shown.
+			chat.addMsg(message, userinfo);
+		}	
+	}
 };
 
 // runs everytime someone writes a command (!<command>)
