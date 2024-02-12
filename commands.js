@@ -81,8 +81,8 @@ ComfyJS.onChat = (user, message, flags, self, extra) => {
 
 	// log user data
 	let user_log = {
-		"profile_img": settings.fetchProfile(self.channel),
-		"login": self.channel,
+		"profile_img": settings.fetchProfile(user),
+		"login": user,
 		"color": self.userColor
 	}
 
@@ -93,7 +93,7 @@ ComfyJS.onChat = (user, message, flags, self, extra) => {
 	if (settings.username.indexOf(user) == -1)
 		settings.fetchProfile(user);
 
-	console.log(message);	
+	console.log(chat);	
 	if(chat.show == true) // only update chat if chat is shown.
 	chat.addMsg(message, user, flags, self, extra);
 };

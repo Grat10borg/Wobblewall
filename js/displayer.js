@@ -5,25 +5,12 @@ let disp = {
 	displayer: $$.id("displayer").children[0],
 	show: false, // by default displayer isn't shown
 
-	// toggle if the displayer should be showing or not
-	toggle: function() {
-		console.log(this.displayer);
-		if (this.show == true) {
-			$$.log("hiding displayer...");	
-			this.show = false;
-			this.displayer.classList.remove("disp-show");
-			this.displayer.classList.add("disp-hide");
-		}
-		else {
-			$$.log("showing displayer...");
-			this.show = true;
-			this.displayer.classList.remove("disp-hide");
-			this.displayer.classList.add("disp-show");
-		}
-		
-	},
-	// play a video on the displayer
-	play: function(link) {
+	// displayer basic functionability
+	toggle: toggle.bind($), // toggle displayer visability
+	play: play.bind($), // play a video on the displayer
+};
+
+function play() {
 		// should filter and then play corisponding function handler
 		link = trimLink(link);
 		if(link == "invalid link")
@@ -37,8 +24,7 @@ let disp = {
 		disp.toggle();	
 
 		}		
-	} 
-};
+}
 
 // removes extra uneeded info like list ids etc
 function trimLink(link) {
@@ -59,3 +45,20 @@ function trimLink(link) {
 		return "invalid link";
 	}
 }
+
+function toggle() {
+	console.log(this.displayer);
+	if (this.show == true) {
+		$$.log("hiding displayer...");	
+		this.show = false;
+		this.displayer.classList.remove("disp-show");
+		this.displayer.classList.add("disp-hide");
+	}
+	else {
+		$$.log("showing displayer...");
+		this.show = true;
+		this.displayer.classList.remove("disp-hide");
+		this.displayer.classList.add("disp-show");
+	}
+}
+

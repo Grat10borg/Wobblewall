@@ -19,6 +19,8 @@ err: err.bind($),
 log: console.log,
 }
 
+// dom functions
+
 // misc function, make javascript wait
 function wait(ms) {
   var start = new Date().getTime();
@@ -28,49 +30,10 @@ function wait(ms) {
   }
 }
 
-<<<<<<< HEAD
-// calls Twitch API to validate token returns 0 on fail 1 on success
-async function api_valid() {
-  if (config.MY_API_TOKEN != undefined &&
-	  config.MY_API_TOKEN != "" &&
-      config.MY_API_TOKEN != null) {
-    await fetch("https://id.twitch.tv/oauth2/validate", {
-      headers: {
-        Authorization: "Bearer " + config.MY_API_TOKEN,
-      },
-    })
-      .then((resp) => resp.json())
-      .then((resp) => {
-        if (resp.status) {
-          if (resp.status == 401) {
-            return 0;
-          }
-          return 0;
-        }
-        if (resp.client_id) {
-		   $$.log(resp);
-		  settings.login = resp.login;
-		  settings.broadcaster_id = resp.user_id;
-          settings.api_clientid = resp.client_id;
-		  settings.api_valid = true;
-          return 1;
-        }
-        return 0;
-      })
-      .catch((err) => {
-        $$.log(err);
-        return 0;
-      });
-    return 1;
-  } else {
-    return 0;
-  }
-=======
 // logs and says a message 
 function err(msg) {
 	console.error(msg);
 	ComfyJS.say(msg);
->>>>>>> 025fcb63629b0fc68d61687e838e150b082eb1ff
 }
 
 // Http request function specify Twitch if using twitch tokens
