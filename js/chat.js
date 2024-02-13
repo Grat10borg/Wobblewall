@@ -79,6 +79,10 @@ async function addMsg(message, user) {
 	msgText.classList.add("message");
 	msgText.innerHTML = message;
 
+	// do in CSS instead
+	msgText.style="color:"+user.color+";";
+	chatborder.style="border-color:"+user.color+";";
+	username.style="color:"+user.color+";margin-left:5px;";
 
 	userdatadiv.append(profileIMG);
 	userdatadiv.append(username);
