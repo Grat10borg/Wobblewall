@@ -9,9 +9,8 @@ let illu = {
 	mark: mark.bind($), // function, stream-markers the stream
 	
 	// for fun functions
-	dice: function(max) {
-		// return a random number between 0 and max 
-	}
+	dice: dice.bind($),
+	lurk: lurk.bind($),
 }
 
 // illu bot function
@@ -100,4 +99,15 @@ async function mark() {
 		settings.mark_count++;
 		}
 	}
+}
+
+function dice(max) {
+	// return a random number between 0 and max 
+	$$.log(max);
+	ComfyJS.Say("The Dice rolls..."+
+	Math.floor(Math.random() * max + 1) + "!!");
+}
+
+function lurk(user) {
+	ComfyJS.Say("okey! please enjoy the stream @"+user+"!!");
 }

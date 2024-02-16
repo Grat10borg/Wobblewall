@@ -152,12 +152,18 @@ ComfyJS.onCommand = (user, command, message, flags, extra) => {
 			case "clip": 
 				// note: make command also able to specify channel 
 				if(approved)
-				illu.clip();
+				illu.clip(); // clip
 				break;
 			// mark your stream with a marker
 			case "mark":
 				if(approved)
 				illu.mark(); // markiplier
+				break;
+			case "dice":
+				illu.dice(message);
+				break;
+			case "lurk":
+				illu.lurk(user);
 				break;
 		}
 	}
