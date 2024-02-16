@@ -47,8 +47,15 @@ function clear() {
 } 
 
 
-async function addMsg(message, user) {
+async function addMsg(message, user, isCommand, command) {
 	
+	// handle message text
+	let returnMessage
+	if(isCommand == true) 
+		returnMessage = ":"+command+" "+message;	
+	else 
+		returnMessage = message;
+
 	console.log(user);
 
 	// chat setup
@@ -77,7 +84,7 @@ async function addMsg(message, user) {
 
 	let msgText = $$.make("p");
 	msgText.classList.add("message");
-	msgText.innerHTML = message;
+	msgText.innerHTML = returnMessage;
 
 	// do in CSS instead
 	msgText.style="color:"+user.color+";";

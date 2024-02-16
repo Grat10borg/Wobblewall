@@ -77,26 +77,16 @@ ComfyJS.Init(config.BOTLOGIN, config.BOTOAUTH, config.TWITCH_LOGIN);
 
 // runs everytime someone chats
 ComfyJS.onChat = (user, message, flags, self, extra) => {
-	console.log(user, flags, self,  extra);	
-
-	//let channelInfo = settings.fetchProfile(user, flags, extra);
-	//console.log(channelInfo);
-
-
-	//settings.users.push(user_log);
-	//$$.log(user_log);
-
-	// cache user details
-	if (settings.usernames.indexOf(user) == -1) {
+	if (settings.usernames.indexOf(user) == -1) { // cache user details
 		if (chat.show == true) {
 			// initialize a varible fetch the async,
 			// then make an embeded function that then calls-
 			// the add message thing i think..
-			let userinfo = settings.fetchProfile(user, flags, extra)
-				.then((userinfo) => chat.addMsg(message, userinfo))
+		let userinfo = settings.fetchProfile(user, flags, extra)
+		.then((userinfo) => chat.addMsg(message, userinfo, false, ""))
 		}
 		else  
-		settings.fetchProfile(user, flags, extra)
+		settings.fetchProfile(user, flags, extra);
 		// if theres already a user cached
 	}
 	else  {
@@ -104,15 +94,28 @@ ComfyJS.onChat = (user, message, flags, self, extra) => {
 	if (chat.show == true) {
 		let userinfo = settings.users[settings.usernames.indexOf(user)]
 		// only update chat if chat is shown.
-		chat.addMsg(message, userinfo);
+		chat.addMsg(message, userinfo, false, "");
 	}	
 };
 
 // runs everytime someone writes a command (!<command>)
 ComfyJS.onCommand = (user, command, message, flags, extra) => {
 	// cache user details
-	if (settings.usernames.indexOf(user) == -1)
-		settings.fetchProfile(user, flags,  extra);
+	if (settings.usernames.indexOf(user) == -1){
+		if(chat.show == true) {
+		let userinfo = settings.fetchProfile(user, flags, extra)
+	.then((userinfo) => chat.addMsg(message, userinfo, true, command))
+		}
+		else 
+		settings.fetchProfile(user, flags, extra);	
+	}
+	else  {
+		if(chat.show == true) {
+		let userinfo = settings.users[settings.usernames.indexOf(user)]
+			chat.addMsg(message, userinfo, true, command);
+		}
+	}
+
 	$$.log(user, command, message, flags, extra);
 
 	// chat -> displayer -> taskbar -> illubot & misc
