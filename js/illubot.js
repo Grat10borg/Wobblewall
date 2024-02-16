@@ -103,9 +103,13 @@ async function mark() {
 
 function dice(max) {
 	// return a random number between 0 and max 
+	if(!isNaN(max)) {
 	$$.log(max);
 	ComfyJS.Say("The Dice rolls..."+
 	Math.floor(Math.random() * max + 1) + "!!");
+	}
+	else
+	ComfyJS.Say("please give a NUMBER :)");
 }
 
 function lurk(user) {

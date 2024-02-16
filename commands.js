@@ -128,6 +128,7 @@ ComfyJS.onCommand = (user, command, message, flags, extra) => {
 		// approved users commands
 		$$.log(command);	
 		switch(command) {
+			/* chat */
 			// toggles hiding & unhiding chat
 			case "chat":
 				if(approved)
@@ -138,6 +139,10 @@ ComfyJS.onCommand = (user, command, message, flags, extra) => {
 				if(approved)
 				chat.clear();
 				break;
+
+			/* taskbar */	
+
+			/* displayer */
 			// triggers the displayers toggle()
 			case "dtest":
 				if(approved)
@@ -148,6 +153,8 @@ ComfyJS.onCommand = (user, command, message, flags, extra) => {
 				if(approved)
 				disp.play(message);
 				break;
+
+			/* bot */
 			// clip your/or specifed channel 30/27~ sec back
 			case "clip": 
 				// note: make command also able to specify channel 
@@ -159,9 +166,11 @@ ComfyJS.onCommand = (user, command, message, flags, extra) => {
 				if(approved)
 				illu.mark(); // markiplier
 				break;
+			// give a random number between 0 and passed value
 			case "dice":
 				illu.dice(message);
 				break;
+			// print a thanks for lurking message
 			case "lurk":
 				illu.lurk(user);
 				break;

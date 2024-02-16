@@ -10,13 +10,33 @@ let disp = {
 	play: play.bind($), // play a video on the displayer
 };
 
-function play() {
+function play(link) {
 		// should filter and then play corisponding function handler
-		link = trimLink(link);
-		if(link == "invalid link")
+		let trimedLink = trimLink(link);
+		if(trimedLink == "invalid link")
 			ComfyJS.Say("Link invalid, please give a youtube link!");
 		else {
+		// clear previous video just incase
+		disp.displayer.innerHTML = "";
 
+		let iframe = $$.make("iframe");
+		iframe.width = 560;
+		iframe.height = 315;
+		iframe.src = trimedLink;
+		iframe.setAttribute("frameborder", "0");
+		iframe.setAttribute("allow", "accelerometer");
+		iframe.autoplay = true;	
+		//iframe.setAttribute("autoplay");
+		//iframe.setAttribute("encrypted-media");
+		//iframe.setAttribute("gyroscope");
+		//iframe.setAttribute("picture-in-picture");
+		//iframe.setAttribute("web-share");
+
+
+		
+		disp.displayer.append(iframe);
+
+		console.log(trimedLink);	
 		// place a youtube player on the displayer
 		
 
@@ -39,7 +59,7 @@ function trimLink(link) {
 		let id = link[0];		
 		console.log(id);
 
-		return "https://www.youtube.com/watch?v="+id;
+		return "https://www.youtube.com/embed/"+id;
 	}
 	else {
 		return "invalid link";
@@ -47,7 +67,7 @@ function trimLink(link) {
 }
 
 function toggle() {
-	console.log(this.displayer);
+	console.log(disp.displayer);
 	if (disp.show == true) {
 		$$.log("hiding displayer...");	
 		disp.show = false;
