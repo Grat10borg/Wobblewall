@@ -12,6 +12,7 @@ let settings = {
 	// data
 	users: [], // contains users data
 	usernames: [], // contains only usernames for quick access
+	emotes: [], // contains twitch emotes, or other emotes
 
 	// counters
 	clip_count: 0, // clips clipped

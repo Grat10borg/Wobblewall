@@ -18,24 +18,21 @@ function play(link) {
 		else {
 		// clear previous video just incase
 		disp.displayer.innerHTML = "";
+	
+		$$.log(disp.displayer.width);
 
 		let iframe = $$.make("iframe");
-		iframe.width = 560;
-		iframe.height = 315;
+		iframe.style = "width: 95%; height: 95%;";
 		iframe.src = trimedLink;
 		iframe.setAttribute("frameborder", "0");
-		iframe.setAttribute("allow", "accelerometer");
+		iframe.setAttribute("allow", "autoplay;" +
+		" accelorometer; encrypted-media; gyroscope:")
+		iframe.allowfullscreen = true;
 		iframe.autoplay = true;	
-		//iframe.setAttribute("autoplay");
-		//iframe.setAttribute("encrypted-media");
-		//iframe.setAttribute("gyroscope");
-		//iframe.setAttribute("picture-in-picture");
-		//iframe.setAttribute("web-share");
-
-
 		
-		disp.displayer.append(iframe);
 
+		disp.displayer.append(iframe);
+			
 		console.log(trimedLink);	
 		// place a youtube player on the displayer
 		
@@ -59,7 +56,7 @@ function trimLink(link) {
 		let id = link[0];		
 		console.log(id);
 
-		return "https://www.youtube.com/embed/"+id;
+		return "https://www.youtube.com/embed/"+id+"?autoplay=1";
 	}
 	else {
 		return "invalid link";
