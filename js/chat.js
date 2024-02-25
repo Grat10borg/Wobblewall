@@ -47,8 +47,9 @@ function clear() {
 } 
 
 
-async function addMsg(message, user, isCommand, command) {
-	
+async function addMsg(message, user, isCommand, command, extra) {
+
+	$$.log(extra);
 	// handle message text
 	let returnMessage
 	if(isCommand == true) 
@@ -58,6 +59,8 @@ async function addMsg(message, user, isCommand, command) {
 
 	console.log(user);
 
+	fetchEmotes();
+		
 	// chat setup
 	let chatmsg = $$.make("li");
 	let chatborder = $$.make("div");
@@ -100,4 +103,30 @@ async function addMsg(message, user, isCommand, command) {
 	chatmsg.append(chatborder);
 
 	chat.chatbox.append(chatmsg);		
+}
+
+// fetch any emotes that might be missing
+async function fetchEmotes() {
+ // run on first runthrough
+ if(settings.emotes.length == 0) {
+	 // gather typical emotes
+   	 let request = await $$.api(
+	 "https://api.twitch.tv/helix/chat/emotes?broadcaster_id="
+	 +settings.broadcaster_id,true);
+	 let request2 = await $$.api(
+	 "https://api.twitch.tv/helix/chat/emotes/global", true)
+
+	 // combine emote request data into an array
+	 let emotes = [...request["data"], ...request2["data"]];
+	 settings.emotes = emotes; 
+
+	 // compact foreach function that seperates out all the emote names
+	 emotes.map((emote) => {
+		 settings.emotesNames.push(emote["name"]);
+	 }); 
+ }
+	
+
+
+	 console.log(settings.emotesNames);
 }

@@ -13,6 +13,7 @@ let settings = {
 	users: [], // contains users data
 	usernames: [], // contains only usernames for quick access
 	emotes: [], // contains twitch emotes, or other emotes
+	emotesNames: [], // contains only the emote names
 
 	// counters
 	clip_count: 0, // clips clipped
@@ -78,13 +79,15 @@ ComfyJS.Init(config.BOTLOGIN, config.BOTOAUTH, config.TWITCH_LOGIN);
 
 // runs everytime someone chats
 ComfyJS.onChat = (user, message, flags, self, extra) => {
+	$$.log(extra.userState["emotes-raw"]);
 	if (settings.usernames.indexOf(user) == -1) { // cache user details
 		if (chat.show == true) {
 			// initialize a varible fetch the async,
 			// then make an embeded function that then calls-
 			// the add message thing i think..
 		let userinfo = settings.fetchProfile(user, flags, extra)
-		.then((userinfo) => chat.addMsg(message, userinfo, false, ""))
+		.then((userinfo) => chat.addMsg(message, userinfo,
+		false, "", extra))
 		}
 		else  
 		settings.fetchProfile(user, flags, extra);
@@ -95,7 +98,7 @@ ComfyJS.onChat = (user, message, flags, self, extra) => {
 	if (chat.show == true) {
 		let userinfo = settings.users[settings.usernames.indexOf(user)]
 		// only update chat if chat is shown.
-		chat.addMsg(message, userinfo, false, "");
+		chat.addMsg(message, userinfo, false, "", extra);
 	}	
 };
 
@@ -105,7 +108,7 @@ ComfyJS.onCommand = (user, command, message, flags, extra) => {
 	if (settings.usernames.indexOf(user) == -1){
 		if(chat.show == true) {
 		let userinfo = settings.fetchProfile(user, flags, extra)
-	.then((userinfo) => chat.addMsg(message, userinfo, true, command))
+	.then((userinfo) => chat.addMsg(message, userinfo, true, command, extra))
 		}
 		else 
 		settings.fetchProfile(user, flags, extra);	
@@ -113,7 +116,7 @@ ComfyJS.onCommand = (user, command, message, flags, extra) => {
 	else  {
 		if(chat.show == true) {
 		let userinfo = settings.users[settings.usernames.indexOf(user)]
-			chat.addMsg(message, userinfo, true, command);
+			chat.addMsg(message, userinfo, true, command, extra);
 		}
 	}
 
