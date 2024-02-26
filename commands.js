@@ -79,7 +79,6 @@ ComfyJS.Init(config.BOTLOGIN, config.BOTOAUTH, config.TWITCH_LOGIN);
 
 // runs everytime someone chats
 ComfyJS.onChat = (user, message, flags, self, extra) => {
-	$$.log(extra.userState["emotes-raw"]);
 	if (settings.usernames.indexOf(user) == -1) { // cache user details
 		if (chat.show == true) {
 			// initialize a varible fetch the async,
@@ -94,7 +93,6 @@ ComfyJS.onChat = (user, message, flags, self, extra) => {
 		// if theres already a user cached
 	}
 	else  {
-	$$.log("in user exists")
 	if (chat.show == true) {
 		let userinfo = settings.users[settings.usernames.indexOf(user)]
 		// only update chat if chat is shown.

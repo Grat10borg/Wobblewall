@@ -58,7 +58,7 @@ async function addMsg(message, user, isCommand, command, extra) {
 	// add emotes to message if there are any
 	if(extra["userState"]["emotes-raw"] != null)
 	returnMessage = addEmotes(message, extra);
-	$$.log(returnMessage);
+
 	// chat setup
 	let chatmsg = $$.make("li");
 	let chatborder = $$.make("div");
@@ -109,7 +109,6 @@ function addEmotes(message, extra) {
 	let newMessage = message;
 
 	emotes.map((emotes) => {
-		$$.log("current emote:" + emotes);
 		let res = emotes.split(":");
 		let locations = res[1].split(",");
 		let indexs = locations[0].split("-");
@@ -118,8 +117,17 @@ function addEmotes(message, extra) {
 		let emoteName = message.substring(parseInt(indexs[0]),
 		 								  parseInt(indexs[1]) + 1);
 		// makes direct link to emote image
-		let emoteImage = "<img src='https://static-cdn.jtvnw.net"+
-		"/emoticons/v2/" + res[0] + "/default/dark/1.0'></img>";
+		let emoteImage;	
+		// add SRC and classes
+		if(extra.isEmoteOnly == true)
+		emoteImage = "<img class='emote-only'"+ 
+		"src='https://static-cdn.jtvnw.net/emoticons/v2/"
+		+ res[0] + "/default/dark/1.0'></img>";
+
+		else
+		emoteImage = "<img class='emote'"+ 
+		"src='https://static-cdn.jtvnw.net/emoticons/v2/"
+		+ res[0] + "/default/dark/1.0'></img>";
 
 		newMessage = newMessage.replaceAll(emoteName, emoteImage);	
 	});
@@ -149,8 +157,4 @@ async function fetchEmotes() {
 		 settings.emotesNames.push(emote["name"]);
 	 }); 
  }
-	
-
-
-	 console.log(settings.emotesNames);
 }
