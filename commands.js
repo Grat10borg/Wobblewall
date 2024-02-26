@@ -12,7 +12,7 @@ let settings = {
 	// data
 	users: [], // contains users data
 	usernames: [], // contains only usernames for quick access
-	emotes: [], // contains twitch emotes, or other emotes
+	emotes: [], // contains global emotes, and channel other emotes
 	emotesNames: [], // contains only the emote names
 
 	// counters

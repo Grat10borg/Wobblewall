@@ -51,16 +51,14 @@ async function addMsg(message, user, isCommand, command, extra) {
 
 	$$.log(extra);
 	// handle message text
-	let returnMessage
+	let returnMessage = message;
 	if(isCommand == true) 
 		returnMessage = ":"+command+" "+message;	
-	else 
-		returnMessage = message;
 
-	console.log(user);
-
-	fetchEmotes();
-		
+	// add emotes to message if there are any
+	if(extra["userState"]["emotes-raw"] != null)
+	returnMessage = addEmotes(message, extra);
+	$$.log(returnMessage);
 	// chat setup
 	let chatmsg = $$.make("li");
 	let chatborder = $$.make("div");
@@ -105,7 +103,33 @@ async function addMsg(message, user, isCommand, command, extra) {
 	chat.chatbox.append(chatmsg);		
 }
 
-// fetch any emotes that might be missing
+// add Twitch emotes with the help of the API
+function addEmotes(message, extra) {
+	let emotes = extra["userState"]["emotes-raw"].split("/");	
+	let newMessage = message;
+
+	emotes.map((emotes) => {
+		$$.log("current emote:" + emotes);
+		let res = emotes.split(":");
+		let locations = res[1].split(",");
+		let indexs = locations[0].split("-");
+
+		// finds emote name in message
+		let emoteName = message.substring(parseInt(indexs[0]),
+		 								  parseInt(indexs[1]) + 1);
+		// makes direct link to emote image
+		let emoteImage = "<img src='https://static-cdn.jtvnw.net"+
+		"/emoticons/v2/" + res[0] + "/default/dark/1.0'></img>";
+
+		newMessage = newMessage.replaceAll(emoteName, emoteImage);	
+	});
+
+	message = newMessage;
+	return message;
+}
+
+// !! currently unused!!
+// fetch global and channel emotes
 async function fetchEmotes() {
  // run on first runthrough
  if(settings.emotes.length == 0) {
