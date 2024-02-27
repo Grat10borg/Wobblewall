@@ -19,6 +19,15 @@ let settings = {
 	clip_count: 0, // clips clipped
 	mark_count: 0, // stream markers marked
 	word_count: 0,
+	
+
+	// enabled status
+/* if wobble wall fails to find elements for etc Chat or Displayer,
+* then disable them and stop any commands for them being executed*/
+	enabled_chat: true,
+	enabled_disp: true,
+	enabled_task: true,
+
 
 	Tconnect: false, // if twitch is connected
 	broadcaster_id: "",
@@ -155,10 +164,34 @@ ComfyJS.onCommand = (user, command, message, flags, extra) => {
 				if(approved)
 				disp.play(message);
 				break;
+			// stop the current video or stop showing whatever else
 			case "stop":
 				if(approved)
 				disp.stop();	
 				break;
+			// pause video, only works on videos/pausable things
+			case "pause":
+				if(approved)
+				disp.pause();
+				break;
+			case "resume":
+				if(approved)
+				disp.resume();
+				break;
+			case "mute":
+				if(approved)
+				disp.mute();
+				break;
+			case "unmute":
+				if(approved)
+				disp.unmute();
+				break;
+			// set value between 0 (muted) and 100 (max)
+			case "set":
+				if(approved)
+				disp.setVolume(message);
+				break;
+
 			/* bot */
 			// clip your/or specifed channel 30/27~ sec back
 			case "clip": 
