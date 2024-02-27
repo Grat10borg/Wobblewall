@@ -155,7 +155,10 @@ ComfyJS.onCommand = (user, command, message, flags, extra) => {
 				if(approved)
 				disp.play(message);
 				break;
-
+			case "stop":
+				if(approved)
+				disp.stop();	
+				break;
 			/* bot */
 			// clip your/or specifed channel 30/27~ sec back
 			case "clip": 

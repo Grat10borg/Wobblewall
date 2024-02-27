@@ -8,7 +8,9 @@ let disp = {
 	// displayer basic functionability
 	playing: false, // if displayer is currently displaying something
 	toggle: toggle.bind($), // toggle displayer visability
+		
 	play: play.bind($), // play a video on the displayer
+	stop: stopVideo.bind($),
 };
 // youtube player
 var player;
@@ -137,14 +139,8 @@ function onPlayerReady(event) {
 	event.target.playVideo();
 }
 
-function onPlayerStateChange(event) {
-	$$.log(YT.PlayerState);
-	if (event.data == YT.PlayerState.ENDED) {
-		disp.toggle()
-		disp.displayer.innerHTML = "";
-	}
-}
-
 function stopVideo() {
+	// stop video and hide player
 	player.stopVideo();
+	disp.toggle();
 }
