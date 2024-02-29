@@ -30,77 +30,9 @@ let settings = {
 	client_id: "",
 
 	// fetch profile pictures from the twitch api
-	fetchProfile: async function(username, flags, extra) {
-
-
-	 // request profile picture
-   	 let request = await $$.api(
-	 "https://api.twitch.tv/helix/users?login="
-	 + username,true)
-
-	 // make shorter "filepath" version 
-	 let res = request["data"][0];
-
-	 if(settings.badges.length == 0){
-	  let globalBadges = await $$.api(
-	  "https://api.twitch.tv/helix/chat/badges/global", true);
-      let channelBadges = await $$.api(
-	  "https://api.twitch.tv/helix/chat/badges?broadcaster_id="
-	  +settings.broadcaster_id, true);
-
-	  settings.badges = [...globalBadges["data"],
-		  			     ...channelBadges["data"]]; 
-	 }
-	
-	 /* scarpped for the time being */
-	 if(settings.betterTVemotes.length == 0) {
-		//let betterTVChannel = await $$.api(
-		//"https://api.betterttv.net/3/cached/users/twitch/"
-		//+settings.broadcaster_id, false);
-		//let betterTVGlobal = await $$.api(
-		//"https://api.betterttv.net/3/cached/emotes/global", false);
-
-		//settings.betterTVmotes = [...betterTVGlobal,
-		//						  ...betterTVChannel]
-	 }
-
-	 // log user data
-	 let user_log = {
-		"profile_img": res["profile_image_url"],
-		"offline_img": res["offline_image_url"],
-		"displayName": extra.displayName,
-		"desc": res["description"],
-		"color": extra.userColor,
-		"login": extra.channel,
-		"id": extra.userId,
-
-		// status
-		"broadcaster_type": res["broadcaster_type"],
-		"badges": extra.userBadges,
-		"extra": extra,
-		"flags": flags,
-	}
-
-	settings.users.push(user_log);     // save userdata for later use
-	settings.usernames.push(username); // save username for quick access
-
-	
-	$$.log(settings.usernames.indexOf(username));
-	// return profile src
-	return user_log;
-	},
-
-	// refresh all profile pictures, should be ran ever hour~ish
-	refreshProfiles: function() {
-		
-	}
+	fetchProfile: fetchProfile(username, flags, extra),
+	cleanMsg: cleanMsg(message),
 };
-
-/*	this file needs: dom.js & config.js
- *
- *
- * */
-
 
 // init ComfyJS
 ComfyJS.Init(config.BOTLOGIN, config.BOTOAUTH, config.TWITCH_LOGIN);
@@ -113,7 +45,7 @@ ComfyJS.onChat = (user, message, flags, self, extra) => {
 			// then make an embeded function that then calls-
 			// the add message thing i think..
 		let userinfo = settings.fetchProfile(user, flags, extra)
-		.then((userinfo) => chat.addMsg(message, userinfo,
+		.then((userinfo) => chat.addMsg(cleanMsg(message), userinfo,
 		false, "", extra))
 		}
 		else  
@@ -124,7 +56,7 @@ ComfyJS.onChat = (user, message, flags, self, extra) => {
 	if (chat.show == true) {
 		let userinfo = settings.users[settings.usernames.indexOf(user)]
 		// only update chat if chat is shown.
-		chat.addMsg(message, userinfo, false, "", extra);
+		chat.addMsg(cleanMsg(message), userinfo, false, "", extra);
 	}	
 };
 
@@ -134,7 +66,8 @@ ComfyJS.onCommand = (user, command, message, flags, extra) => {
 	if (settings.usernames.indexOf(user) == -1){
 		if(chat.show == true) {
 		let userinfo = settings.fetchProfile(user, flags, extra)
-	.then((userinfo) => chat.addMsg(message, userinfo, true, command, extra))
+	.then((userinfo) => chat.addMsg(cleanMsg(message),
+		userinfo, true, command, extra))
 		}
 		else 
 		settings.fetchProfile(user, flags, extra);	
@@ -142,11 +75,9 @@ ComfyJS.onCommand = (user, command, message, flags, extra) => {
 	else  {
 		if(chat.show == true) {
 		let userinfo = settings.users[settings.usernames.indexOf(user)]
-			chat.addMsg(message, userinfo, true, command, extra);
+			chat.addMsg(cleanMsg(message), userinfo, true, command, extra);
 		}
 	}
-
-	$$.log(user, command, message, flags, extra);
 
 	// chat -> displayer -> taskbar -> illubot & misc
 	let approved = false;
@@ -225,7 +156,7 @@ ComfyJS.onCommand = (user, command, message, flags, extra) => {
 				break;
 			// give a random number between 0 and passed value
 			case "dice":
-				illu.dice(message);
+				illu.dice(cleanMsg(message));
 				break;
 			// print a thanks for lurking message
 			case "lurk":
@@ -235,3 +166,76 @@ ComfyJS.onCommand = (user, command, message, flags, extra) => {
 	}
 }
 
+
+// fetch profile pictures from the twitch api
+async function fetchProfile(username, flags, extra) {
+	 // request profile picture
+   	 let request = await $$.api(
+	 "https://api.twitch.tv/helix/users?login="
+	 + username,true)
+
+	 // make shorter "filepath" version 
+	 let res = request["data"][0];
+
+	 if(settings.badges.length == 0){
+	  let globalBadges = await $$.api(
+	  "https://api.twitch.tv/helix/chat/badges/global", true);
+      let channelBadges = await $$.api(
+	  "https://api.twitch.tv/helix/chat/badges?broadcaster_id="
+	  +settings.broadcaster_id, true);
+
+	  settings.badges = [...globalBadges["data"],
+		  			     ...channelBadges["data"]]; 
+	 }
+	
+	 /* scarpped for the time being */
+	 if(settings.betterTVemotes.length == 0) {
+		//let betterTVChannel = await $$.api(
+		//"https://api.betterttv.net/3/cached/users/twitch/"
+		//+settings.broadcaster_id, false);
+		//let betterTVGlobal = await $$.api(
+		//"https://api.betterttv.net/3/cached/emotes/global", false);
+
+		//settings.betterTVmotes = [...betterTVGlobal,
+		//						  ...betterTVChannel]
+	 }
+
+	 // log user data
+	 let user_log = {
+		"profile_img": res["profile_image_url"],
+		"offline_img": res["offline_image_url"],
+		"displayName": extra.displayName,
+		"desc": res["description"],
+		"color": extra.userColor,
+		"login": extra.channel,
+		"id": extra.userId,
+
+		// status
+		"broadcaster_type": res["broadcaster_type"],
+		"badges": extra.userBadges,
+		"extra": extra,
+		"flags": flags,
+	}
+
+	settings.users.push(user_log);     // save userdata for later use
+	settings.usernames.push(username); // save username for quick access
+
+	
+	$$.log(settings.usernames.indexOf(username));
+	// return profile src
+	return user_log;
+}
+
+/* cleans message for HTML or JS code, unless you're approved */
+function cleanMsg(message) {
+	// change <> into imitation ones
+	if(message.match(/[<>]/i)){
+		message = message.replaceAll(/</g, "＜");
+		message = message.replaceAll(/>/g, "＞");
+	}
+	// changes javascript: to javascript⋮ hopefully ruining js code
+	if(message.match(/javascript:/))
+	message = message.replaceAll(":", "⋮");
+
+	return message;
+}
