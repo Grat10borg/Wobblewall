@@ -42,14 +42,27 @@ let settings = {
 	 // make shorter "filepath" version 
 	 let res = request["data"][0];
 
-	 let globalBadges = await $$.api(
-	 "https://api.twitch.tv/helix/chat/badges/global", true);
-     let channelBadges = await $$.api(
-	 "https://api.twitch.tv/helix/chat/badges?broadcaster_id="
-	 +settings.broadcaster_id, true);
+	 if(settings.badges.length == 0){
+	  let globalBadges = await $$.api(
+	  "https://api.twitch.tv/helix/chat/badges/global", true);
+      let channelBadges = await $$.api(
+	  "https://api.twitch.tv/helix/chat/badges?broadcaster_id="
+	  +settings.broadcaster_id, true);
 
-	 settings.badges = [...globalBadges["data"], ...channelBadges["data"]]; 
-	 console.log(settings.badges);
+	  settings.badges = [...globalBadges["data"],
+		  			     ...channelBadges["data"]]; 
+	 }
+
+	 if(settings.betterTVmotes.length == 0) {
+		//let betterTVChannel = await $$.api(
+		//"https://api.betterttv.net/3/cached/users/twitch/"
+		//+settings.broadcaster_id, false);
+		//let betterTVGlobal = await $$.api(
+		//"https://api.betterttv.net/3/cached/emotes/global", false);
+
+		//settings.betterTVmotes = [...betterTVGlobal,
+		//						  ...betterTVChannel]
+	 }
 
 	 // log user data
 	 let user_log = {
