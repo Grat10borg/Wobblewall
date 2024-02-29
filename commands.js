@@ -14,20 +14,16 @@ let settings = {
 	usernames: [], // contains only usernames for quick access
 	emotes: [], // contains global emotes, and channel other emotes
 	emotesNames: [], // contains only the emote names
+	
+	betterTVmotes: [], // contain better TV emotes
+	betterTVnames: [], // contains names of better TV emotes
+	badges: [], // channel & global twitch badges
 
 	// counters
 	clip_count: 0, // clips clipped
 	mark_count: 0, // stream markers marked
 	word_count: 0,
 	
-
-	// enabled status
-/* if wobble wall fails to find elements for etc Chat or Displayer,
-* then disable them and stop any commands for them being executed*/
-	enabled_chat: true,
-	enabled_disp: true,
-	enabled_task: true,
-
 
 	Tconnect: false, // if twitch is connected
 	broadcaster_id: "",
@@ -37,6 +33,7 @@ let settings = {
 	// fetch profile pictures from the twitch api
 	fetchProfile: async function(username, flags, extra) {
 
+
 	 // request profile picture
    	 let request = await $$.api(
 	 "https://api.twitch.tv/helix/users?login="
@@ -44,6 +41,15 @@ let settings = {
 
 	 // make shorter "filepath" version 
 	 let res = request["data"][0];
+
+	 let globalBadges = await $$.api(
+	 "https://api.twitch.tv/helix/chat/badges/global", true);
+     let channelBadges = await $$.api(
+	 "https://api.twitch.tv/helix/chat/badges?broadcaster_id="
+	 +settings.broadcaster_id, true);
+
+	 settings.badges = [...globalBadges["data"], ...channelBadges["data"]]; 
+	 console.log(settings.badges);
 
 	 // log user data
 	 let user_log = {
