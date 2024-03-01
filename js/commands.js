@@ -30,8 +30,8 @@ let settings = {
 	client_id: "",
 
 	// fetch profile pictures from the twitch api
-	fetchProfile: fetchProfile(username, flags, extra),
-	cleanMsg: cleanMsg(message),
+	fetchProfile: fetchProfile.bind($),
+	cleanMsg: cleanMsg.bind($),
 };
 
 // init ComfyJS

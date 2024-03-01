@@ -15,7 +15,6 @@ wait: wait.bind($),
 api: api.bind($), 
 api_approve: api_approve.bind($), // validate twitch token
 
-err: err.bind($),
 log: console.log,
 }
 
@@ -28,12 +27,6 @@ function wait(ms) {
   while (end < start + ms) {
     end = new Date().getTime();
   }
-}
-
-// logs and says a message 
-function err(msg) {
-	console.error(msg);
-	ComfyJS.say(msg);
 }
 
 // Http request function specify Twitch if using twitch tokens
@@ -99,11 +92,9 @@ async function api_approve() {
 	 
           return 1;
         }
-        $$.err("unexpected Output ..." + resp.message);
         return 0;
       })
       .catch((err) => {
-        $$.err(err);
         return 0;
       });
  return 1;

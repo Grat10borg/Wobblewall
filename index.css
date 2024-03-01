@@ -7,7 +7,8 @@
   font-family: 'Atkinson-Hyperlegible';
   src: url("fonts/Atkinson-Hyperlegible-Regular-102.eot");
   /* IE9 Compat Modes */
-  src: url("fonts/Atkinson-Hyperlegible-Regular-102.eot?#iefix") format("embedded-opentype"), 
+  src: url("fonts/Atkinson-Hyperlegible-Regular-102.eot?#iefix")
+  format("embedded-opentype"), 
   url("fonts/Atkinson-Hyperlegible-Regular-102a.woff2") format("woff2"),
   url("fonts/Atkinson-Hyperlegible-Regular-102.woff") format("woff"), 
   url("fonts/Atkinson-Hyperlegible-Regular-102.ttf") format("truetype"), 
@@ -191,20 +192,24 @@
 	display: block;
 }
 
-.taskbar .spacer {
+/*.taskbar .spacer {
 	height: 100%;
 	margin: 0 3vh 0 3vh;
-}
+}**/
 
 	/* creates a line */
-.taskbar .seperator {
+/*.taskbar .seperator {
 	width: 5px;
 	height: 100%;
 	margin: 0 1vh 0 1vh;
 	border-radius: 15px;
 	background: var(--taskbar_seperator);
-}
+}*/
 
+#time {
+	font-size: 24px;
+	color: white;
+}
 	/*turn overlay chat only*/
 @media screen and (max-width: 700px) {
 	.chat { 
@@ -319,7 +324,7 @@
 	height: 100%;
 	display: flex;
 	justify-content: center;
-	background: aquamarine;
+	background: var(--main_color_lighter);
 	transform: translateY(-100%);
 	transition: ease 4s;
 }
@@ -333,3 +338,4 @@
 	transform: translateY(-100%);
 	transform-origin: bottom;
 }
+

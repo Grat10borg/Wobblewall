@@ -10,7 +10,11 @@ let task = {
 if(task.elem_time != undefined) {
 	setInterval(() => {
 		let date = new Date().toLocaleTimeString();
-		task.elem_time.innerHTML = date.substring(0, 5)
-		+" "+date.substring(9); 
+		let splits = date.split(":");
+		let frontNo = splits[0];
+		if(splits[0][1] == null)
+		frontNo = "0"+splits[0];
+		let PMAM = splits[2].split(" ");
+		task.elem_time.innerHTML = frontNo+":"+splits[1]+" "+PMAM[1]
 	}, 1000)
 }
