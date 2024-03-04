@@ -14,6 +14,7 @@ query_all: $.querySelectorAll.bind($),
 wait: wait.bind($),
 api: api.bind($), 
 api_approve: api_approve.bind($), // validate twitch token
+txt: txt.bind($),
 
 log: console.log,
 }
@@ -99,4 +100,24 @@ async function api_approve() {
       });
  return 1;
 }
+
 //#endregion
+
+/* Fetch() is the bane of my existance,
+ * this /works/ but its not prettyy, if i move this to a nodejs project
+ * then make a fs thing instead*/
+async function txt(path) {
+  await fetch(path)
+  .then(response => response.text())
+  .then((txt) => {    
+    //return txt;
+    let textarea = $$.make("textarea");
+    textarea.textContent = txt;
+    textarea.id = path;
+    textarea.hidden = true;
+    $.body.append(textarea);
+  })
+  let text = $$.id(path).innerHTML;
+  $$.id(path).outerHTML = ""; // remove textarea again
+  return text;
+}

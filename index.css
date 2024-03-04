@@ -205,6 +205,15 @@
 	font-size: 28px;
 	color: white;
 }
+
+#music {
+	height: 100%;
+	width: 30%;	
+	display: flex;
+	align-items: center;
+	justify-content: center;	
+}
+
 	/*turn overlay chat only*/
 @media screen and (max-width: 700px) {
 	.chat { 
