@@ -98,10 +98,13 @@
   margin-right: 10px;
   pointer-events: none;
   border-radius: 100%;
-  width: 32px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: black;
 }
 
 .chat li .user-data-line .username {
+	font-family: 'Atkinson-Hyperlegible',"VT323", Fallback, monospace;	
 	display: inline-block;
 	font-size: 23px;
 	color: #c1d9f2;
@@ -123,18 +126,16 @@
 	color: #c1d9f2;
 }
 
-.chat li .message img {
+.chat li .emote {
 	width: 28px;
 	display: inline-block;
+	image-rendering: pixelated;
 }
 
-.chat li .message .imgemotebig {
+.chat li .emote-only {
 	width: 64px;
 	display: inline-block;
-}
-
-.chat li .message .clip-thumbnail {
-	width: 364px;
+	image-rendering: pixelated;
 }
 
 .chat li .message a {
@@ -192,22 +193,16 @@
 	display: block;
 }
 
-/*.taskbar .spacer {
+.clock {
+	width: 20%;
 	height: 100%;
-	margin: 0 3vh 0 3vh;
-}**/
-
-	/* creates a line */
-/*.taskbar .seperator {
-	width: 5px;
-	height: 100%;
-	margin: 0 1vh 0 1vh;
-	border-radius: 15px;
-	background: var(--taskbar_seperator);
-}*/
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
 
 #time {
-	font-size: 24px;
+	font-size: 28px;
 	color: white;
 }
 	/*turn overlay chat only*/
@@ -224,67 +219,6 @@
 	}
 }
 	
-
-.HEXFF0000 {
-  color: #ff0000 !important;
-}
-
-.HEX0000FF {
-  color: #0077ff !important;
-}
-
-.HEX008000 {
-  color: #008000 !important;
-}
-
-.HEXB22222 {
-  color: #b22222 !important;
-}
-
-.HEXFF7F50 {
-  color: #ff7f50 !important;
-}
-
-.HEX9ACD32 {
-  color: #9acd32 !important;
-}
-
-.HEXFF4500 {
-  color: #ff4500 !important;
-}
-
-.HEX2E8B57 {
-  color: #2e8b57 !important;
-}
-
-.HEXDAA520 {
-  color: #daa520 !important;
-}
-
-.HEXD2691E {
-  color: #d2691e !important;
-}
-
-.HEX5F9EA0 {
-  color: #5f9ea0 !important;
-}
-
-.HEX1E90FF {
-  color: #1e90ff !important;
-}
-
-.HEXFF69B4 {
-  color: #ff69b4 !important;
-}
-
-.HEX8A2BE2 {
-  color: #8a2be2 !important;
-}
-
-.HEX00FF7F {
-  color: #00ff7f !important;
-}
-
 /*hide chat unhide chat css*/
 .chat-hide {
     transform: translateX(-100%);

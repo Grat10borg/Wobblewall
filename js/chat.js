@@ -75,6 +75,7 @@ async function addMsg(message, user, isCommand, command, extra) {
 	profileIMG.width = 45;
 	profileIMG.height = 45;
 	profileIMG.style = "padding: 5px; border-radius: 15px"
+	profileIMG.classList.add("profile")
 
 	let username = $$.make("p");
 	username.classList.add("username");
@@ -122,12 +123,12 @@ function addEmotes(message, extra) {
 		if(extra.isEmoteOnly == true)
 		emoteImage = "<img class='emote-only'"+ 
 		"src='https://static-cdn.jtvnw.net/emoticons/v2/"
-		+ res[0] + "/default/dark/1.0'></img>";
+		+ res[0] + "/default/dark/3.0'></img>";
 
 		else
 		emoteImage = "<img class='emote'"+ 
 		"src='https://static-cdn.jtvnw.net/emoticons/v2/"
-		+ res[0] + "/default/dark/1.0'></img>";
+		+ res[0] + "/default/dark/3.0'></img>";
 
 		newMessage = newMessage.replaceAll(emoteName, emoteImage);	
 	});
