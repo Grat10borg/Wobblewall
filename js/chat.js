@@ -74,7 +74,6 @@ async function addMsg(message, user, isCommand, command, extra) {
 	// should be done by CSS
 	profileIMG.width = 45;
 	profileIMG.height = 45;
-	profileIMG.style = "padding: 5px; border-radius: 15px"
 	profileIMG.classList.add("profile")
 
 	let username = $$.make("p");
@@ -92,6 +91,7 @@ async function addMsg(message, user, isCommand, command, extra) {
 	msgText.style="color:"+user.color+";";
 	chatborder.style="border-color:"+user.color+";";
 	username.style="color:"+user.color+";margin-left:5px;";
+	profileIMG.style="border-color:"+user.color+";";
 
 	userdatadiv.append(profileIMG);
 	userdatadiv.append(username);

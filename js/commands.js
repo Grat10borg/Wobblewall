@@ -102,7 +102,12 @@ ComfyJS.onCommand = (user, command, message, flags, extra) => {
 				break;
 
 			/* taskbar */	
-
+			//	play music player 
+			case "music":
+				if(approved)
+				task.play();
+				break;
+				
 			/* displayer */
 			// triggers the displayers toggle()
 			case "dtest":
@@ -121,8 +126,12 @@ ComfyJS.onCommand = (user, command, message, flags, extra) => {
 				break;
 			// pause video, only works on videos/pausable things
 			case "pause":
-				if(approved)
-				disp.pause();
+				if(approved){
+					if(disp.playing == true)
+						disp.pause();
+					if(task.elem_music_player.paused == false)
+						task.play(); // pause/toggle
+				}
 				break;
 			case "resume":
 				if(approved)
