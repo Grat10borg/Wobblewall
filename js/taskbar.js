@@ -6,6 +6,8 @@ var task = {
 	elem_music: $$.id("music"),
 	elem_music_player: "",
 	music_json : {},
+	current_song: 0, // count up to music_json.length and then repeat
+	Unpause: false, // unpause music again, etc if displayer pauses music
 
 	play: pauseplay.bind($),
 }
@@ -35,7 +37,8 @@ if(task.elem_music != undefined) {
 		let audio = $$.make("audio");
 		let source = $$.make("source");
 
-		source.src = "custom/music/"+music["music"][8];
+		source.src = "custom/music/"+music["music"][task.current_song];
+		task.current_song++;
 		source.type = "audio/mpeg";
 		source.id = "musicSource";
 		audio.setAttribute("controls", "");
@@ -51,10 +54,10 @@ if(task.elem_music != undefined) {
 		// what to do once music player ends
 		task.elem_music_player.onended = function() {
 
-			console.log(task.music_json);
-			console.log("custom/music/"+task.music_json["music"][9])
+			console.log("custom/music/"+task.music_json["music"][task.current_song])
 			$$.id("musicSource").src = 
-			"custom/music/"+task.music_json["music"][9];
+			"custom/music/"+task.music_json["music"][task.current_song];
+			task.current_song++;
 			task.elem_music_player.load();
 
 		};

@@ -48,6 +48,10 @@ function play(link) {
 		// toggle display animation when ready
 		if(disp.show == false || disp.playing == false) {
 			disp.playing = true;
+			if(task.elem_music_player.paused == false) {
+				task.Unpause = true;
+				task.play();
+			}
 			disp.toggle();
 		}
 	}
@@ -98,6 +102,15 @@ function onPlayerReady(event) {
 // mostly to help with debuging
 function onPlayerStateChange(event) {
 	$$.log(YT.PlayerState);
+	$$.log(event.data);
+    if (event.data == YT.PlayerState.ENDED  
+		|| event.data == YT.PlayerState.CUED) {
+		if(task.Unpause == true){
+			task.play();
+			task.Unpause = false;
+		}
+    }
+
 }
 
 function stopVideo() {
@@ -107,19 +120,19 @@ function stopVideo() {
 }
 
 function pauseVideo() {
-	ytplayer.pauseVideo();
+	player.pauseVideo();
 }
 
 function resumeVideo() {
-	ytplayer.playVideo();
+	player.playVideo();
 }
 
 function muteVideo() {
-	ytplayer.mute();
+	player.mute();
 }
 
 function unmuteVideo() {
-	ytplayer.unMute();
+	player.unMute();
 }
 
 // set volume for player between max and none
@@ -127,7 +140,7 @@ function setVolume(vol) {
 	let loudness = vol.toFixed;
 
 	if(loudness > -1 && vol < 101)
-		ytplayer.setVolume(loudness);
+		player.setVolume(loudness);
 	else
 		ComfyJS.Say("Please only use numbers between 0-100 :/");
 }
