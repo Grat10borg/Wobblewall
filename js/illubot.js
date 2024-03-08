@@ -34,10 +34,11 @@ async function clip() {
 		},}) 
 		.then((respon) => respon.json())
 		.then((respon) => {
+			$$.log(respon);
 			return respon; // return clip data
 		})
 		.catch((err) => {$$.log(err)}) // error handling
-		
+		$$.log(clip_resp);	
 		if(clip_resp["error"] == "Not Found") 
 		ComfyJS.Say("⚠ You cannot clip an Offline Channel!! :<");
 
@@ -58,6 +59,9 @@ async function clip() {
 		$$.log(clip_resp["data"][0]["edit_url"]);
 		}
 		
+	}
+	else {
+		ComfyJS.Say("Error: api key wasn't found valid.");
 	}
 }
 

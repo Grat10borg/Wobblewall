@@ -7,7 +7,7 @@ let settings = {
 	api_valid: false, // by default false becomes true when validated
 	api_clientid: "", // twitch clientId needed for API calls
 	broadcaster_id: "", // twitch broadcaster, used in API calls
-	login: "", // sometimes used in API calls
+	broadcaster_login: "", // sometimes used in API calls
 
 	// data
 	users: [], // contains users data
@@ -24,10 +24,10 @@ let settings = {
 	word_count: 0,
 	
 
-	Tconnect: false, // if twitch is connected
-	broadcaster_id: "",
-	broadcaster_login: "",
-	client_id: "",
+	//Tconnect: false, // if twitch is connected
+	//broadcaster_id: "",
+	//broadcaster_login: "",
+	//client_id: "",
 
 	// fetch profile pictures from the twitch api
 	fetchProfile: fetchProfile.bind($),
