@@ -17,6 +17,7 @@ api_approve: api_approve.bind($), // validate twitch token
 txt: txt.bind($),
 
 log: console.log,
+Olog: Olog.bind($),
 }
 
 // dom functions
@@ -120,4 +121,9 @@ async function txt(path) {
   let text = $$.id(path).innerHTML;
   $$.id(path).outerHTML = ""; // remove textarea again
   return text;
+}
+
+function Olog(message) {
+	ComfyJS.Say(message);
+	console.error(message);
 }

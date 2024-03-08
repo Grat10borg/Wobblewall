@@ -23,165 +23,177 @@ let settings = {
 	mark_count: 0, // stream markers marked
 	word_count: 0,
 	
-
-	//Tconnect: false, // if twitch is connected
-	//broadcaster_id: "",
-	//broadcaster_login: "",
-	//client_id: "",
-
 	// fetch profile pictures from the twitch api
 	fetchProfile: fetchProfile.bind($),
 	cleanMsg: cleanMsg.bind($),
 };
 
+
 // init ComfyJS
 ComfyJS.Init(config.BOTLOGIN, config.BOTOAUTH, config.TWITCH_LOGIN);
 
-// runs everytime someone chats
+
+// runs everytime someone posts a message in twitch chat
 ComfyJS.onChat = (user, message, flags, self, extra) => {
-	if (settings.usernames.indexOf(user) == -1) { // cache user details
-		if (chat.show == true) {
-			// initialize a varible fetch the async,
-			// then make an embeded function that then calls-
-			// the add message thing i think..
-		let userinfo = settings.fetchProfile(user, flags, extra)
-		.then((userinfo) => chat.addMsg(cleanMsg(message), userinfo,
-		false, "", extra))
+	// only if on-screen chat is visable
+	if(chat.show == true) {
+		// collect infomation if we don't have the user saved
+		if (settings.usernames.indexOf(user) == -1) {
+			// fetch user info
+			settings.fetchProfile(user, flags, extra)
+			.then((userinfo) => { 
+				chat.addMsg(cleanMsg(message), userinfo, false,
+				"", extra);
+			});
 		}
-		else  
-		settings.fetchProfile(user, flags, extra);
-		// if theres already a user cached
-	}
-	else  {
-	if (chat.show == true) {
-		let userinfo = settings.users[settings.usernames.indexOf(user)]
-		// only update chat if chat is shown.
-		chat.addMsg(cleanMsg(message), userinfo, false, "", extra);
-	}	
+		// if we already have user infomation do this
+		else {
+			// get user infomation from saved users
+			let userinfo = settings.users[
+			settings.usernames.indexOf(user)]
+
+			chat.addMsg(cleanMsg(message), userinfo, false, "", extra);
+		}
+  }
+  // if on-screen chat isn't visable
+  else if(settings.usernames.indexOf(user) == -1) { 
+	settings.fetchProfile(user, flags, extra);
+  }
 };
+
 
 // runs everytime someone writes a command (!<command>)
 ComfyJS.onCommand = (user, command, message, flags, extra) => {
-	// cache user details
-	if (settings.usernames.indexOf(user) == -1){
-		if(chat.show == true) {
-		let userinfo = settings.fetchProfile(user, flags, extra)
-	.then((userinfo) => chat.addMsg(cleanMsg(message),
-		userinfo, true, command, extra))
+	// if on-screen chat is visable
+	if(chat.show == true) {
+		// get user infomation if user isn't in saved users
+		if (settings.usernames.indexOf(user) == -1) {
+			// fetch user info
+			settings.fetchProfile(user, flags, extra)
+			.then((userinfo) => {
+				chat.addMsg(cleanMsg(message), userinfo, true,
+				command, extra);
+			});
+		}	
+		// get saved user infomation
+		else  {
+			let userinfo = settings.users[
+			settings.usernames.indexOf(user)]
+			
+			chat.addMsg(cleanMsg(message), userinfo, true,
+			command, extra);
 		}
-		else 
+	}	
+	// if on-screen chat isn't visable
+	else if(settings.users.indexOf(user) == -1) {
 		settings.fetchProfile(user, flags, extra);	
-	}
-	else  {
-		if(chat.show == true) {
-		let userinfo = settings.users[settings.usernames.indexOf(user)]
-			chat.addMsg(cleanMsg(message), userinfo, true, command, extra);
-		}
 	}
 
 	// chat -> displayer -> taskbar -> illubot & misc
 	let approved = false;
-	if(flags.broadcaster == true || 
-	flags.mod == true ||
-	flags.vip == true) {
+	if(flags.broadcaster == true || flags.mod == true 
+	|| flags.vip == true) {
 		approved = true;
 	}
-		// approved users commands
-		$$.log(command);	
-		switch(command) {
-			/* chat */
-			// toggles hiding & unhiding chat
-			case "chat":
-				if(approved)
-				chat.toggle();
-				break;
-			// clear chat
-			case "clear":
-				if(approved)
-				chat.clear();
-				break;
 
-			/* taskbar */	
-			//	play music player 
-			case "music":
-				if(approved)
-				task.play();
-				break;
+	// approved users commands
+	$$.log(command);	
+	switch(command) {
+		/* chat */
+		// toggles hiding & unhiding chat
+		case "chat":
+			if(approved)
+			chat.toggle();
+			break;
+		// clear chat
+		case "clear":
+			if(approved)
+			chat.clear();
+			break;
+
+		/* taskbar */	
+		//	play music player 
+		case "music":
+			if(approved)
+			task.play();
+			break;
 				
-			/* displayer */
-			// triggers the displayers toggle()
-			case "dtest":
-				if(approved)
-				disp.toggle();
-				break;
-			// tries to play a YT video on displayer 
-			case "play":
-				if(approved)
-				disp.play(message);
-				break;
-			// stop the current video or stop showing whatever else
-			case "stop":
-				if(approved)
-				disp.stop();	
-				break;
-			// pause video, only works on videos/pausable things
-			case "pause":
-				if(approved){
-					if(disp.playing == true)
-						disp.pause();
-					if(task.elem_music_player.paused == false)
-						task.play(); // pause/toggle
-				}
-				break;
-			case "resume":
-				if(approved)
-				disp.resume();
-				break;
-			case "mute":
-				if(approved)
-				disp.mute();
-				break;
-			case "unmute":
-				if(approved)
-				disp.unmute();
-				break;
-			// set value between 0 (muted) and 100 (max)
-			case "set":
-				if(approved)
-				disp.setVolume(message);
-				break;
+		/* displayer */
+		// triggers the displayers toggle()
+		case "dtest":
+			if(approved)
+			disp.toggle();
+			break;
+		// tries to play a YT video on displayer 
+		case "play":
+			if(approved)
+			disp.play(message);
+			break;
+		// stop the current video or stop showing whatever else
+		case "stop":
+			if(approved)
+			disp.stop();	
+			break;
+		// pause video, only works on videos/pausable things
+		case "pause":
+			if(approved){
+				if(disp.playing == true)
+					disp.pause();
+				if(task.elem_music_player.paused == false)
+					task.play(); // pause/toggle
+			}
+			break;
 
-			/* bot */
-			// clip your/or specifed channel 30/27~ sec back
-			case "clip": 
-				// note: make command also able to specify channel 
-				if(approved)
-				illu.clip(); // clip
-				break;
-			// mark your stream with a marker
-			case "mark":
-				if(approved)
-				illu.mark(); // markiplier
-				break;
-			// give a random number between 0 and passed value
-			case "dice":
-				illu.dice(cleanMsg(message));
-				break;
-			// print a thanks for lurking message
-			case "lurk":
-				illu.lurk(user);
-				break;
-		}
+		case "resume":
+			if(approved)
+			disp.resume();
+			break;
+
+		case "mute":
+			if(approved)
+			disp.mute();
+			break;
+
+		case "unmute":
+			if(approved)
+			disp.unmute();
+			break;
+		// set value between 0 (muted) and 100 (max)
+		case "set":
+			if(approved)
+			disp.setVolume(message);
+			break;
+
+		/* bot */
+		// clip your/or specifed channel 30/27~ sec back
+		case "clip": 
+		// note: make command also able to specify channel 
+			if(approved)
+			illu.clip(); // clip
+			break;
+		// mark your stream with a marker
+		case "mark":
+			if(approved)
+			illu.mark(); // markiplier
+			break;
+		// give a random number between 0 and passed value
+		case "dice":
+			illu.dice(cleanMsg(message));
+			break;
+		// print a thanks for lurking message
+		case "lurk":
+			illu.lurk(user);
+			break;
 	}
 }
+
 
 
 // fetch profile pictures from the twitch api
 async function fetchProfile(username, flags, extra) {
 	 // request profile picture
    	 let request = await $$.api(
-	 "https://api.twitch.tv/helix/users?login="
-	 + username,true)
+	 "https://api.twitch.tv/helix/users?login=" + username, true);
 
 	 // make shorter "filepath" version 
 	 let res = request["data"][0];
@@ -242,6 +254,7 @@ function cleanMsg(message) {
 		message = message.replaceAll(/</g, "＜");
 		message = message.replaceAll(/>/g, "＞");
 	}
+
 	// changes javascript: to javascript⋮ hopefully ruining js code
 	if(message.match(/javascript:/))
 	message = message.replaceAll(":", "⋮");
