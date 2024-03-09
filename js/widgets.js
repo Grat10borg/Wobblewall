@@ -1,7 +1,6 @@
 "use strict";
 
 var widget = {
-	elem: $$.id("taskbar"),
 	elem_time: $$.id("time"),
 	elem_music: $$.id("music"),
 	elem_music_player: "",

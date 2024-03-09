@@ -2,7 +2,7 @@
 
 $$.api_approve(); // validate twitch token
 
-// contains basic settings and functions about user/stream info
+// contains cached variables
 let cached = {
 	api_valid: false, // by default false becomes true when validated
 	api_clientid: "", // twitch clientId needed for API calls
@@ -12,16 +12,11 @@ let cached = {
 	// data
 	users: [], // contains users data
 	usernames: [], // contains only usernames for quick access
-	emotes: [], // contains global emotes, and channel other emotes
-	emotesNames: [], // contains only the emote names
+	badges: [], // channel & global twitch badges
 	
 	// data set by Twitch bot (tbot.js)
 	clips: [], // array, holds all clip responses
-	marks: [], // array, holds stream markings
-
-	
-	betterTVemotes: [], // contain better TV emotes
-	badges: [], // channel & global twitch badges
+	marks: [], // array, holds all marker responses
 
 	// counters
 	clip_count: 0, // clips clipped
@@ -31,6 +26,12 @@ let cached = {
 	// fetch profile pictures from the twitch api
 	fetchProfile: fetchProfile.bind($),
 	cleanMsg: cleanMsg.bind($),
+
+
+	// scrapped / WIP
+	//emotes: [], // contains global emotes, and channel other emotes
+	//emotesNames: [], // contains only the emote names
+	//betterTVemotes: [], // contain better TV emotes
 };
 
 
@@ -40,6 +41,9 @@ ComfyJS.Init(config.BOTLOGIN, config.BOTOAUTH, config.TWITCH_LOGIN);
 
 // runs everytime someone posts a message in twitch chat
 ComfyJS.onChat = (user, message, flags, self, extra) => {
+	if(true) // removes possibly malicious code
+		message = cleanMsg(message);
+
 	// only if on-screen chat is visable
 	if(chat.show == true) {
 		// collect infomation if we don't have the user saved
@@ -47,7 +51,7 @@ ComfyJS.onChat = (user, message, flags, self, extra) => {
 			// fetch user info
 			cached.fetchProfile(user, flags, extra)
 			.then((userinfo) => { 
-				chat.addMsg(cleanMsg(message), userinfo, false,
+				chat.addMsg(message, userinfo, false,
 				"", extra);
 			});
 		}
@@ -57,7 +61,7 @@ ComfyJS.onChat = (user, message, flags, self, extra) => {
 			let userinfo = cached.users[
 			cached.usernames.indexOf(user)]
 
-			chat.addMsg(cleanMsg(message), userinfo, false, "", extra);
+			chat.addMsg(message, userinfo, false, "", extra);
 		}
   }
   // if on-screen chat isn't visable
@@ -69,6 +73,10 @@ ComfyJS.onChat = (user, message, flags, self, extra) => {
 
 // runs everytime someone writes a command (!<command>)
 ComfyJS.onCommand = (user, command, message, flags, extra) => {
+
+	if(true) // removes possibly malicious code
+		message = cleanMsg(message);
+
 	// if on-screen chat is visable
 	if(chat.show == true) {
 		// get user infomation if user isn't in saved users
@@ -76,7 +84,7 @@ ComfyJS.onCommand = (user, command, message, flags, extra) => {
 			// fetch user info
 			cached.fetchProfile(user, flags, extra)
 			.then((userinfo) => {
-				chat.addMsg(cleanMsg(message), userinfo, true,
+				chat.addMsg(message, userinfo, true,
 				command, extra);
 			});
 		}	
@@ -85,7 +93,7 @@ ComfyJS.onCommand = (user, command, message, flags, extra) => {
 			let userinfo = cached.users[
 			cached.usernames.indexOf(user)]
 			
-			chat.addMsg(cleanMsg(message), userinfo, true,
+			chat.addMsg(message, userinfo, true,
 			command, extra);
 		}
 	}	
@@ -179,11 +187,11 @@ ComfyJS.onCommand = (user, command, message, flags, extra) => {
 		// mark your stream with a marker
 		case "mark":
 			if(approved)
-			tbot.mark(cleanMsg(message)); // markiplier
+			tbot.mark(message); // markiplier
 			break;
 		// give a random number between 0 and passed value
 		case "dice":
-			tbot.dice(cleanMsg(message));
+			tbot.dice(message);
 			break;
 		// print a thanks for lurking message
 		case "lurk":
@@ -211,21 +219,9 @@ async function fetchProfile(username, flags, extra) {
 	  +cached.broadcaster_id, true);
 
 	  cached.badges = [...globalBadges["data"],
-		  		     ...channelBadges["data"]]; 
+		  		      ...channelBadges["data"]]; 
 	 }
 	
-	 /* scarpped for the time being */
-	 if(cached.betterTVemotes.length == 0) {
-		//let betterTVChannel = await $$.api(
-		//"https://api.betterttv.net/3/cached/users/twitch/"
-		//+settings.broadcaster_id, false);
-		//let betterTVGlobal = await $$.api(
-		//"https://api.betterttv.net/3/cached/emotes/global", false);
-
-		//settings.betterTVmotes = [...betterTVGlobal,
-		//						  ...betterTVChannel]
-	 }
-
 	 // log user data
 	 let user_log = {
 		"profile_img": res["profile_image_url"],
@@ -246,8 +242,6 @@ async function fetchProfile(username, flags, extra) {
 	cached.users.push(user_log);     // save userdata for later use
 	cached.usernames.push(username); // save username for quick access
 
-	
-	$$.log(cached.usernames.indexOf(username));
 	// return profile src
 	return user_log;
 }

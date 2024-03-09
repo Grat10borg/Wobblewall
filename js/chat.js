@@ -4,15 +4,14 @@
 let chat = {
 	elem: $$.id("chat"),
 	chatbox: $$.id("chat").children[0],
+
 	// tells if they chat should be showing & actively update
 	show: true, 
 
 	// basic chat functionability
-	toggle: toggle.bind($), // toggles visability of chat	
+	addMsg: addMsg.bind($), // add message to chat 
 	clear: clear.bind($), // clears chat 
-
-	// add a chat msg to the bottom of the chat
-	addMsg: addMsg.bind($), 
+	toggle: toggle.bind($), // toggles visability of chat	
 };
 
 // toggles chat visability
@@ -135,27 +134,4 @@ function addEmotes(message, extra) {
 
 	message = newMessage;
 	return message;
-}
-
-// !! currently unused!!
-// fetch global and channel emotes
-async function fetchEmotes() {
- // run on first runthrough
- if(cached.emotes.length == 0) {
-	 // gather typical emotes
-   	 let request = await $$.api(
-	 "https://api.twitch.tv/helix/chat/emotes?broadcaster_id="
-	 +cached.broadcaster_id,true);
-	 let request2 = await $$.api(
-	 "https://api.twitch.tv/helix/chat/emotes/global", true)
-
-	 // combine emote request data into an array
-	 let emotes = [...request["data"], ...request2["data"]];
-	 cached.emotes = emotes; 
-
-	 // compact foreach function that seperates out all the emote names
-	 emotes.map((emote) => {
-		 cached.emotesNames.push(emote["name"]);
-	 }); 
- }
 }
