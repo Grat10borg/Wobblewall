@@ -37,7 +37,7 @@ async function api(http, isTwitch) {
     const respon = await fetch(`${http}`, {
       headers: {
         Authorization: "Bearer " + config.MY_API_TOKEN,
-        "Client-ID": settings.api_clientid, 
+        "Client-ID": cached.api_clientid, 
       },
     })
       .then((respon) => respon.json())
@@ -84,10 +84,10 @@ async function api_approve() {
           return 0;
         }
         if (resp) {
-      settings.api_clientid = resp.client_id; // client ID
-	  settings.api_valid = true; // twitch connected.
-	  settings.broadcaster_login = resp.login; // username
-	  settings.broadcaster_id = resp.user_id; // user ID
+      cached.api_clientid = resp.client_id; // client ID
+	  cached.api_valid = true; // twitch connected.
+	  cached.broadcaster_login = resp.login; // username
+	  cached.broadcaster_id = resp.user_id; // user ID
 
           $$.log("Token Validated Sucessfully ... logged into "
           + resp.login);

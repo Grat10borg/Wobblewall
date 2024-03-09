@@ -51,8 +51,8 @@ async function clip() {
 			this.mark("clip created here.");
 
 			// save clips
-			settings.clips.push(clip_resp);
-			settings.clip_count++;
+			cached.clips.push(clip_resp);
+			cached.clip_count++;
 
 			ComfyJS.Say("Clipped: https://clips.twitch.tv/"+clip_id);
 			$$.log(clip_resp["data"][0]["edit_url"]);
@@ -78,15 +78,15 @@ async function mark(desc) {
 		// POST call to make and return a twitch clip
 		let mark_resp = await fetch(
 		"https://api.twitch.tv/helix/streams/marker"
-		+settings.broadcaster_id,{
+		+cached.broadcaster_id,{
 		 method: "POST",
 			headers: {
 				Authorization: "Bearer " + config.MY_API_TOKEN,
-				"Client-ID": settings.api_clientid,
+				"Client-ID": cached.api_clientid,
 				"Content-Type": "application/json",
 		},
 		// pass a user id and a description for marker desc
-		body: JSON.stringify({"user_id": settings.broadcaster_id,
+		body: JSON.stringify({"user_id": cached.broadcaster_id,
 			"description": desc})
 		}) 
 		.then((respon) => respon.json())
@@ -105,8 +105,8 @@ async function mark(desc) {
 
 		// if response is as expected
 		else if(mark_resp["data"][0]["id"] != null) {
-			settings.marks.push(mark_resp);
-			settings.mark_count++;
+			cached.marks.push(mark_resp);
+			cached.mark_count++;
 		}
 		else 
 			$$.err("unexpected response:", mark_resp);

@@ -48,9 +48,9 @@ function play(link) {
 		// toggle display animation when ready
 		if(disp.show == false || disp.playing == false) {
 			disp.playing = true;
-			if(task.elem_music_player.paused == false) {
-				task.Unpause = true;
-				task.play();
+			if(widget.elem_music_player.paused == false) {
+				widget.Unpause = true;
+				widget.play();
 			}
 			disp.toggle();
 		}
@@ -105,9 +105,9 @@ function onPlayerStateChange(event) {
 	$$.log(event.data);
     if (event.data == YT.PlayerState.ENDED  
 		|| event.data == YT.PlayerState.CUED) {
-		if(task.Unpause == true){
-			task.play();
-			task.Unpause = false;
+		if(widget.Unpause == true){
+			widget.play();
+			widget.Unpause = false;
 		}
     }
 

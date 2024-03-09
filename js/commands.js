@@ -3,7 +3,7 @@
 $$.api_approve(); // validate twitch token
 
 // contains basic settings and functions about user/stream info
-let settings = {
+let cached = {
 	api_valid: false, // by default false becomes true when validated
 	api_clientid: "", // twitch clientId needed for API calls
 	broadcaster_id: "", // twitch broadcaster, used in API calls
@@ -43,9 +43,9 @@ ComfyJS.onChat = (user, message, flags, self, extra) => {
 	// only if on-screen chat is visable
 	if(chat.show == true) {
 		// collect infomation if we don't have the user saved
-		if (settings.usernames.indexOf(user) == -1) {
+		if (cached.usernames.indexOf(user) == -1) {
 			// fetch user info
-			settings.fetchProfile(user, flags, extra)
+			cached.fetchProfile(user, flags, extra)
 			.then((userinfo) => { 
 				chat.addMsg(cleanMsg(message), userinfo, false,
 				"", extra);
@@ -54,15 +54,15 @@ ComfyJS.onChat = (user, message, flags, self, extra) => {
 		// if we already have user infomation do this
 		else {
 			// get user infomation from saved users
-			let userinfo = settings.users[
-			settings.usernames.indexOf(user)]
+			let userinfo = cached.users[
+			cached.usernames.indexOf(user)]
 
 			chat.addMsg(cleanMsg(message), userinfo, false, "", extra);
 		}
   }
   // if on-screen chat isn't visable
-  else if(settings.usernames.indexOf(user) == -1) { 
-	settings.fetchProfile(user, flags, extra);
+  else if(cached.usernames.indexOf(user) == -1) { 
+	cached.fetchProfile(user, flags, extra);
   }
 };
 
@@ -72,9 +72,9 @@ ComfyJS.onCommand = (user, command, message, flags, extra) => {
 	// if on-screen chat is visable
 	if(chat.show == true) {
 		// get user infomation if user isn't in saved users
-		if (settings.usernames.indexOf(user) == -1) {
+		if (cached.usernames.indexOf(user) == -1) {
 			// fetch user info
-			settings.fetchProfile(user, flags, extra)
+			cached.fetchProfile(user, flags, extra)
 			.then((userinfo) => {
 				chat.addMsg(cleanMsg(message), userinfo, true,
 				command, extra);
@@ -82,16 +82,16 @@ ComfyJS.onCommand = (user, command, message, flags, extra) => {
 		}	
 		// get saved user infomation
 		else  {
-			let userinfo = settings.users[
-			settings.usernames.indexOf(user)]
+			let userinfo = cached.users[
+			cached.usernames.indexOf(user)]
 			
 			chat.addMsg(cleanMsg(message), userinfo, true,
 			command, extra);
 		}
 	}	
 	// if on-screen chat isn't visable
-	else if(settings.users.indexOf(user) == -1) {
-		settings.fetchProfile(user, flags, extra);	
+	else if(cached.users.indexOf(user) == -1) {
+		cached.fetchProfile(user, flags, extra);	
 	}
 
 	// chat -> displayer -> taskbar -> illubot & misc
@@ -120,7 +120,7 @@ ComfyJS.onCommand = (user, command, message, flags, extra) => {
 		//	play music player 
 		case "music":
 			if(approved)
-			task.play();
+			widget.play();
 			break;
 				
 		/* displayer */
@@ -144,8 +144,8 @@ ComfyJS.onCommand = (user, command, message, flags, extra) => {
 			if(approved){
 				if(disp.playing == true)
 					disp.pause();
-				if(task.elem_music_player.paused == false)
-					task.play(); // pause/toggle
+				if(widget.elem_music_player.paused == false)
+					widget.play(); // pause/toggle
 			}
 			break;
 
@@ -179,7 +179,7 @@ ComfyJS.onCommand = (user, command, message, flags, extra) => {
 		// mark your stream with a marker
 		case "mark":
 			if(approved)
-			tbot.mark(); // markiplier
+			tbot.mark(cleanMsg(message)); // markiplier
 			break;
 		// give a random number between 0 and passed value
 		case "dice":
@@ -203,19 +203,19 @@ async function fetchProfile(username, flags, extra) {
 	 // make shorter "filepath" version 
 	 let res = request["data"][0];
 
-	 if(settings.badges.length == 0) {
+	 if(cached.badges.length == 0) {
 	  let globalBadges = await $$.api(
 	  "https://api.twitch.tv/helix/chat/badges/global", true);
       let channelBadges = await $$.api(
 	  "https://api.twitch.tv/helix/chat/badges?broadcaster_id="
-	  +settings.broadcaster_id, true);
+	  +cached.broadcaster_id, true);
 
-	  settings.badges = [...globalBadges["data"],
-		  			     ...channelBadges["data"]]; 
+	  cached.badges = [...globalBadges["data"],
+		  		     ...channelBadges["data"]]; 
 	 }
 	
 	 /* scarpped for the time being */
-	 if(settings.betterTVemotes.length == 0) {
+	 if(cached.betterTVemotes.length == 0) {
 		//let betterTVChannel = await $$.api(
 		//"https://api.betterttv.net/3/cached/users/twitch/"
 		//+settings.broadcaster_id, false);
@@ -243,11 +243,11 @@ async function fetchProfile(username, flags, extra) {
 		"flags": flags,
 	}
 
-	settings.users.push(user_log);     // save userdata for later use
-	settings.usernames.push(username); // save username for quick access
+	cached.users.push(user_log);     // save userdata for later use
+	cached.usernames.push(username); // save username for quick access
 
 	
-	$$.log(settings.usernames.indexOf(username));
+	$$.log(cached.usernames.indexOf(username));
 	// return profile src
 	return user_log;
 }

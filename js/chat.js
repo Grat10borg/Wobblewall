@@ -141,21 +141,21 @@ function addEmotes(message, extra) {
 // fetch global and channel emotes
 async function fetchEmotes() {
  // run on first runthrough
- if(settings.emotes.length == 0) {
+ if(cached.emotes.length == 0) {
 	 // gather typical emotes
    	 let request = await $$.api(
 	 "https://api.twitch.tv/helix/chat/emotes?broadcaster_id="
-	 +settings.broadcaster_id,true);
+	 +cached.broadcaster_id,true);
 	 let request2 = await $$.api(
 	 "https://api.twitch.tv/helix/chat/emotes/global", true)
 
 	 // combine emote request data into an array
 	 let emotes = [...request["data"], ...request2["data"]];
-	 settings.emotes = emotes; 
+	 cached.emotes = emotes; 
 
 	 // compact foreach function that seperates out all the emote names
 	 emotes.map((emote) => {
-		 settings.emotesNames.push(emote["name"]);
+		 cached.emotesNames.push(emote["name"]);
 	 }); 
  }
 }
