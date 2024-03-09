@@ -17,7 +17,7 @@ api_approve: api_approve.bind($), // validate twitch token
 txt: txt.bind($),
 
 log: console.log,
-Olog: Olog.bind($),
+err: Olog.bind($),
 }
 
 // dom functions

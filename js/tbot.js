@@ -1,10 +1,9 @@
 "use strict";
 
-let illu = {
-	
-	clips: [], // array, holds all clip responses
-	marks: [], // array, holds stream markings
+// overview of twitch bot
+let tbot = {
 
+	/* functions */
 	clip: clip.bind($), // function, clips stream
 	mark: mark.bind($), // function, stream-markers the stream
 	
@@ -13,15 +12,12 @@ let illu = {
 	lurk: lurk.bind($),
 }
 
-// illu bot function
+/* tbot functions */
 
 // clip the last 30s / ~27s of the stream
 async function clip() {
 	// only clip if token is valid.
-	$$.log(settings);
 	if(settings.api_valid) {
-		$$.log("clipp!!");	
-
 		// POST call to make and return a twitch clip
 		let clip_resp = await fetch(
 		"https://api.twitch.tv/helix/clips?broadcaster_id="
@@ -34,41 +30,50 @@ async function clip() {
 		},}) 
 		.then((respon) => respon.json())
 		.then((respon) => {
-			$$.log(respon);
-			return respon; // return clip data
+			// return Twitch's response
+			return respon; 
 		})
-		.catch((err) => {$$.log(err)}) // error handling
-		$$.log(clip_resp);	
+		// error handling for fetch
+		.catch((err) => {$$.log(err)})
+
+		// error handling for responses
 		if(clip_resp["error"] == "Not Found") 
-		ComfyJS.Say("⚠ You cannot clip an Offline Channel!! :<");
-
+			$$.err("⚠ You cannot clip an Offline Channel!! :<");
 		if(clip_resp == undefined)
-		ComfyJS.Say("Error, clip response was nothing");
-
-		// if it returned anything
+			$$.err("Error, clip response was nothing");
+		
+		// if response was as expected
 		else if(clip_resp["data"][0]["id"] != null) {
-		  let clip_id = clip_resp["data"][0]["id"];
-			// note: create stream maker here
-			this.mark();
-			$$.wait(2000);
-		// save clips
-		this.clips.push(clip_resp);
-		settings.clip_count++;
+			// save "slug" of the returned clip link
+			let clip_id = clip_resp["data"][0]["id"];
 
-		ComfyJS.Say("Clipped: https://clips.twitch.tv/"+clip_id);
-		$$.log(clip_resp["data"][0]["edit_url"]);
+			// creates a stream marker of the clip-taking
+			this.mark("clip created here.");
+
+			// save clips
+			settings.clips.push(clip_resp);
+			settings.clip_count++;
+
+			ComfyJS.Say("Clipped: https://clips.twitch.tv/"+clip_id);
+			$$.log(clip_resp["data"][0]["edit_url"]);
+		}
+		else {
+			$$.err("Unexpected response:", clip_resp);
 		}
 		
 	}
 	else {
-		ComfyJS.Say("Error: api key wasn't found valid.");
+		$$.err("Error: api key wasn't found valid.");
 	}
 }
 
 
 // markiplier
-async function mark() {
-	// make a Twitch stream marker
+async function mark(desc) {
+
+	if(desc == "" || desc == undefined)
+		desc = "no description given.";
+
 	if(settings.api_valid) {
 		// POST call to make and return a twitch clip
 		let mark_resp = await fetch(
@@ -82,38 +87,42 @@ async function mark() {
 		},
 		// pass a user id and a description for marker desc
 		body: JSON.stringify({"user_id": settings.broadcaster_id,
-			"description": "markiplier command"})
+			"description": desc})
 		}) 
 		.then((respon) => respon.json())
 		.then((respon) => {
 			return respon;
 		})
-		.catch((err) => {$$.log(err)}) // error handling
+		// error handling for fetch
+		.catch((err) => {$$.log(err)}) 
 		
+		// error handling for responses
 		if(mark_resp["error"] == "Not Found") 
-		ComfyJS.Say("⚠ You cannot mark an Offline Channel!! :<");
+			$$.err("⚠ You cannot mark an Offline Channel!! :<");
 
 		if(mark_resp == undefined)
-		ComfyJS.Say("Error, mark response was nothing");
+			$$.err("Error, mark response was nothing");
 
-		// if it returned anything
+		// if response is as expected
 		else if(mark_resp["data"][0]["id"] != null) {
-		$$.wait(2000);
-		this.marks.push(mark_resp);
-		settings.mark_count++;
+			settings.marks.push(mark_resp);
+			settings.mark_count++;
 		}
+		else 
+			$$.err("unexpected response:", mark_resp);
 	}
 }
+
+/* for fun functions */
 
 function dice(max) {
 	// return a random number between 0 and max 
 	if(!isNaN(max)) {
-	$$.log(max);
-	ComfyJS.Say("The Dice rolls..."+
-	Math.floor(Math.random() * max + 1) + "!!");
+		ComfyJS.Say("The Dice rolls..."+
+		Math.floor(Math.random() * max + 1) + "!!");
 	}
 	else
-	ComfyJS.Say("please give a NUMBER :)");
+		ComfyJS.Say("please give a NUMBER :)");
 }
 
 function lurk(user) {

@@ -15,6 +15,11 @@ let settings = {
 	emotes: [], // contains global emotes, and channel other emotes
 	emotesNames: [], // contains only the emote names
 	
+	// data set by Twitch bot (tbot.js)
+	clips: [], // array, holds all clip responses
+	marks: [], // array, holds stream markings
+
+	
 	betterTVemotes: [], // contain better TV emotes
 	badges: [], // channel & global twitch badges
 
@@ -169,20 +174,20 @@ ComfyJS.onCommand = (user, command, message, flags, extra) => {
 		case "clip": 
 		// note: make command also able to specify channel 
 			if(approved)
-			illu.clip(); // clip
+			tbot.clip(); // clip
 			break;
 		// mark your stream with a marker
 		case "mark":
 			if(approved)
-			illu.mark(); // markiplier
+			tbot.mark(); // markiplier
 			break;
 		// give a random number between 0 and passed value
 		case "dice":
-			illu.dice(cleanMsg(message));
+			tbot.dice(cleanMsg(message));
 			break;
 		// print a thanks for lurking message
 		case "lurk":
-			illu.lurk(user);
+			tbot.lurk(user);
 			break;
 	}
 }
@@ -198,7 +203,7 @@ async function fetchProfile(username, flags, extra) {
 	 // make shorter "filepath" version 
 	 let res = request["data"][0];
 
-	 if(settings.badges.length == 0){
+	 if(settings.badges.length == 0) {
 	  let globalBadges = await $$.api(
 	  "https://api.twitch.tv/helix/chat/badges/global", true);
       let channelBadges = await $$.api(
