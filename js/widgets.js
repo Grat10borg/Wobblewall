@@ -12,7 +12,7 @@ var widget = {
 }
 
 /* code for onscreen clock  */
-if(widget.elem_time != undefined) {
+if(widget.elem_time != undefined || settings.clock_on == false) {
 	setInterval(() => {
 		let date = new Date().toLocaleTimeString();
 		let splits = date.split(":");
@@ -25,7 +25,7 @@ if(widget.elem_time != undefined) {
 }
 
 /* code for music player */
-if(widget.elem_music != undefined) {
+if(widget.elem_music != undefined || settings.musicbox_on == false) {
   async function musicplayer() {
 	let text = await $$.txt("custom/music.json")
 	.then((response) => {

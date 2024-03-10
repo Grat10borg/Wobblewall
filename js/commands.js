@@ -41,7 +41,8 @@ ComfyJS.Init(config.BOTLOGIN, config.BOTOAUTH, config.TWITCH_LOGIN);
 
 // runs everytime someone posts a message in twitch chat
 ComfyJS.onChat = (user, message, flags, self, extra) => {
-	if(true) // removes possibly malicious code
+	if(settings.ruin_malicious_code == true)
+		// removes possibly malicious code
 		message = cleanMsg(message);
 
 	// only if on-screen chat is visable
@@ -74,7 +75,8 @@ ComfyJS.onChat = (user, message, flags, self, extra) => {
 // runs everytime someone writes a command (!<command>)
 ComfyJS.onCommand = (user, command, message, flags, extra) => {
 
-	if(true) // removes possibly malicious code
+	if(settings.ruin_malicious_code)
+		// removes possibly malicious code
 		message = cleanMsg(message);
 
 	// if on-screen chat is visable
@@ -115,65 +117,67 @@ ComfyJS.onCommand = (user, command, message, flags, extra) => {
 		/* chat */
 		// toggles hiding & unhiding chat
 		case "chat":
-			if(approved)
+			if(approved && settings.chat_on == true)
 			chat.toggle();
 			break;
 		// clear chat
 		case "clear":
-			if(approved)
+			if(approved && settings.chat_on == true)
 			chat.clear();
 			break;
 
 		/* taskbar */	
 		//	play music player 
 		case "music":
-			if(approved)
+			if(approved && settings.musicbox_on == true)
 			widget.play();
 			break;
 				
 		/* displayer */
 		// triggers the displayers toggle()
 		case "dtest":
-			if(approved)
+			if(approved && settings.displayer_on == true)
 			disp.toggle();
 			break;
 		// tries to play a YT video on displayer 
 		case "play":
-			if(approved)
+			if(approved && settings.displayer_on == true)
 			disp.play(message);
 			break;
 		// stop the current video or stop showing whatever else
 		case "stop":
-			if(approved)
+			if(approved && settings.displayer_on == true)
 			disp.stop();	
 			break;
 		// pause video, only works on videos/pausable things
 		case "pause":
 			if(approved){
-				if(disp.playing == true)
+				if(disp.playing == true 
+				  && settings.displayer_on == true)
 					disp.pause();
-				if(widget.elem_music_player.paused == false)
+				if(widget.elem_music_player.paused == false 
+				  && settings.musicbox_on)
 					widget.play(); // pause/toggle
 			}
 			break;
 
 		case "resume":
-			if(approved)
+			if(approved && settings.displayer_on == true)
 			disp.resume();
 			break;
 
 		case "mute":
-			if(approved)
+			if(approved && settings.displayer_on == true)
 			disp.mute();
 			break;
 
 		case "unmute":
-			if(approved)
+			if(approved && settings.displayer_on == true)
 			disp.unmute();
 			break;
 		// set value between 0 (muted) and 100 (max)
 		case "set":
-			if(approved)
+			if(approved && settings. displayer_on == true)
 			disp.setVolume(message);
 			break;
 
@@ -181,20 +185,28 @@ ComfyJS.onCommand = (user, command, message, flags, extra) => {
 		// clip your/or specifed channel 30/27~ sec back
 		case "clip": 
 		// note: make command also able to specify channel 
-			if(approved)
+			if(approved 
+			&& settings.tbot_on == true 
+			&& settings.tbot.clip_cmd_on == true)
 			tbot.clip(); // clip
 			break;
 		// mark your stream with a marker
 		case "mark":
-			if(approved)
+			if(approved
+			&& settings.tbot_on ==  true
+			&& settings.tbot.mark_cmd_on == true)
 			tbot.mark(message); // markiplier
 			break;
 		// give a random number between 0 and passed value
 		case "dice":
+			if(settings.tbot_on == true
+			&& settings.tbot.dice_cmd_on == true)
 			tbot.dice(message);
 			break;
 		// print a thanks for lurking message
 		case "lurk":
+			if(settings.tbot_on == true
+			&& settings.tbot.lurk_cmd_on == true)
 			tbot.lurk(user);
 			break;
 	}

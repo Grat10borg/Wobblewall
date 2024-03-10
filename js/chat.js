@@ -55,7 +55,8 @@ async function addMsg(message, user, isCommand, command, extra) {
 		returnMessage = ":"+command+" "+message;	
 
 	// add emotes to message if there are any
-	if(extra["userState"]["emotes-raw"] != null)
+	if(extra["userState"]["emotes-raw"] != null 
+	   && settings.chat.emotes_on == true)
 	returnMessage = addEmotes(message, extra);
 
 	// chat setup
