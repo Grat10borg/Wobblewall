@@ -16,6 +16,24 @@ let disp = {
 	mute: muteVideo.bind($),
 	unmute: unmuteVideo.bind($),
 };
+
+/* automatic turn off if chat id isn't found. */
+if(disp.elem == undefined) {
+	// turn off chat
+	settings.displayer_on = false;
+
+	$$.log(settings);
+	$$.err("no displayer element found");
+}
+else {
+	let div = $$.make("div");
+	div.id = "displayer-inner";
+	disp.elem.append(div);
+
+	disp.displayer = $$.id("displayer-inner"); 
+}
+
+
 // youtube player
 var player;
 
