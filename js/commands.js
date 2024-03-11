@@ -46,7 +46,7 @@ ComfyJS.onChat = (user, message, flags, self, extra) => {
 		message = cleanMsg(message);
 
 	// only if on-screen chat is visable
-	if(chat.show == true) {
+	if(chat.show == true && settings.chat_on == true) {
 		// collect infomation if we don't have the user saved
 		if (cached.usernames.indexOf(user) == -1) {
 			// fetch user info
@@ -62,6 +62,7 @@ ComfyJS.onChat = (user, message, flags, self, extra) => {
 			let userinfo = cached.users[
 			cached.usernames.indexOf(user)]
 
+			if(settings.chat_on == true)
 			chat.addMsg(message, userinfo, false, "", extra);
 		}
   }

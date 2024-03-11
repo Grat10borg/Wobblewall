@@ -3,7 +3,7 @@
 // chat obj containing functions commands etc 
 let chat = {
 	elem: $$.id("chat"),
-	chatbox: $$.id("chat").children[0],
+	chatbox: "",
 
 	// tells if they chat should be showing & actively update
 	show: true, 
@@ -13,6 +13,22 @@ let chat = {
 	clear: clear.bind($), // clears chat 
 	toggle: toggle.bind($), // toggles visability of chat	
 };
+
+/* automatic turn off if chat id isn't found. */
+if(chat.elem == undefined) {
+	// turn off chat
+	settings.chat_on = false;
+
+	$$.log(settings);
+	$$.err("no chat element found");
+}
+else {
+	let ul = $$.make("ul");
+	ul.id = "chatbox";
+	chat.elem.append(ul);
+
+	chat.chatbox = $$.id("chatbox"); 
+}
 
 // toggles chat visability
 function toggle() {
