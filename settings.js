@@ -39,5 +39,5 @@ var settings = {
 	/* widgets that do misc things, like a music player or a clock*/
 	clock_on: true,
 	musicbox_on: true,
-
+	musicbox_randomize: true,
 }
