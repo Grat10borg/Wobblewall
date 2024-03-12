@@ -88,8 +88,6 @@ async function addMsg(message, user, isCommand, command, extra) {
 	profileIMG.src = user.profile_img;
 
 	// should be done by CSS
-	profileIMG.width = 45;
-	profileIMG.height = 45;
 	profileIMG.classList.add("profile")
 
 	let username = $$.make("p");
@@ -104,10 +102,11 @@ async function addMsg(message, user, isCommand, command, extra) {
 	msgText.innerHTML = returnMessage;
 
 	// do in CSS instead
-	msgText.style="color:"+user.color+";";
-	chatborder.style="border-color:"+user.color+";";
-	username.style="color:"+user.color+";margin-left:5px;";
-	profileIMG.style="border-color:"+user.color+";";
+	
+	//msgText.style="color:"+user.color+";";
+	//chatborder.style="border-color:"+user.color+";";
+	//username.style="color:"+user.color+";margin-left:5px;";
+	//profileIMG.style="border-color:"+user.color+";";
 
 	userdatadiv.append(profileIMG);
 	userdatadiv.append(username);
