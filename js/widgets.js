@@ -50,6 +50,13 @@ if(widget.elem_music != undefined || settings.musicbox_on == false) {
 
 		widget.elem_music_player.volume = 0.2;
 
+
+		/* put name of song on overlay */
+		let p = $$.make("p");
+		p.innerHTML = music["music"][widget.current_song];
+
+		widget.elem_music.append(p);
+
 		// what to do once music player ends
 		widget.elem_music_player.onended = function() {
 

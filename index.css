@@ -207,12 +207,26 @@
 }
 
 #music {
-	opacity: 0;
 	height: 100%;
 	width: 30%;	
 	display: flex;
 	align-items: center;
 	justify-content: center;	
+}
+
+#music p {
+	margin: auto;
+	display: block;
+	color: white;
+	font-size: 18px;
+	text-align: center;
+}
+
+/* hide music player outside of view*/
+#music audio {
+	opacity: 0%;
+	position: absolute;
+	top: 10px;
 }
 
 	/*turn overlay chat only*/
