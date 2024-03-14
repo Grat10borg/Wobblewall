@@ -18,6 +18,8 @@ var settings = {
 	chat_on: true,
 	chat:  {
 		emotes_on: true, // wobblewal will keep emotes as text
+		// wobblewall will shorten names with _ or spaces
+		shorten_names: true, 
 	},
 	
 	/* on-screen video-player/image display settings*/

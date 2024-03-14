@@ -67,9 +67,14 @@ async function addMsg(message, user, isCommand, command, extra) {
 	$$.log(extra);
 	// handle message text
 	let returnMessage = message;
+	let usrname = user.displayName;
 	if(isCommand == true) 
 		returnMessage = ":"+command+" "+message;	
 
+	if(settings.chat.shorten_names == true) {
+		let res = user.displayName.split(/[_\s]/);
+		usrname = res[0];
+	}
 	// add emotes to message if there are any
 	if(extra["userState"]["emotes-raw"] != null 
 	   && settings.chat.emotes_on == true)
@@ -92,7 +97,7 @@ async function addMsg(message, user, isCommand, command, extra) {
 
 	let username = $$.make("p");
 	username.classList.add("username");
-	username.innerHTML = user.displayName;
+	username.innerHTML = usrname;
 
 	let badgeDiv = $$.make("div");
 	badgeDiv.classList.add("badges");
