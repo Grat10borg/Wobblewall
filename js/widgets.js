@@ -85,8 +85,9 @@ if(widget.elem_music != undefined || settings.musicbox_on == false) {
 			widget.current_song++;
 			}
 			else {
-			let rando = Math.floor(Math.random() * music.length);
-
+			let rando = Math.floor(Math.random()
+			* widget.music_json["music"].length);
+				
 			$$.id("musicSource").src = 
 			"custom/music/"+widget.music_json["music"][rando];
 

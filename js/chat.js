@@ -103,7 +103,12 @@ async function addMsg(message, user, isCommand, command, extra) {
 	badgeDiv.classList.add("badges");
 
 	let msgText = $$.make("p");
+
+	if(command == true)
+	msgText.classList.add("command");
+	else 
 	msgText.classList.add("message");
+
 	msgText.innerHTML = returnMessage;
 
 	// do in CSS instead
