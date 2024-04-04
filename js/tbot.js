@@ -17,20 +17,22 @@ let tbot = {
 // clip the last 30s / ~27s of the stream
 async function clip() {
 	// only clip if token is valid.
-	if(settings.api_valid) {
+	$$.log(cached.api_valid);
+	if(cached.api_valid) {
 		// POST call to make and return a twitch clip
 		let clip_resp = await fetch(
 		"https://api.twitch.tv/helix/clips?broadcaster_id="
-		+settings.broadcaster_id,{
+		+cached.broadcaster_id,{
 		 method: "POST",
 			headers: {
 				Authorization: "Bearer " + config.MY_API_TOKEN,
-				"Client-ID": settings.api_clientid,
+				"Client-ID": cached.api_clientid,
 				"Content-Type": "application/json"
 		},}) 
 		.then((respon) => respon.json())
 		.then((respon) => {
 			// return Twitch's response
+			console.log(respon);
 			return respon; 
 		})
 		// error handling for fetch
@@ -74,7 +76,7 @@ async function mark(desc) {
 	if(desc == "" || desc == undefined)
 		desc = "no description given.";
 
-	if(settings.api_valid) {
+	if(cached.api_valid) {
 		// POST call to make and return a twitch clip
 		let mark_resp = await fetch(
 		"https://api.twitch.tv/helix/streams/marker"

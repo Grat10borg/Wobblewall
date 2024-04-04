@@ -18,15 +18,16 @@
 @font-face {
   font-family: 'Atkinson-Hyperlegible';
   src: url(fonts/AtkinsonHyperlegible-Italic.ttf);
-  font-style: italic, oblique;
+  font-style: italic;
 }
 
 @font-face {
   font-family: 'Atkinson-Hyperlegible';
   src: url(fonts/AtkinsonHyperlegible-BoldItalic.ttf);
   font-weight: bold;
-  font-style: italic, oblique;
+  font-style: italic;
 }
+
 
 :root {
 	--screen_width: 100vw;

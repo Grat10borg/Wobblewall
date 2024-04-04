@@ -84,6 +84,7 @@ async function api_approve() {
           return 0;
         }
         if (resp) {
+	  $$.log(resp);
       cached.api_clientid = resp.client_id; // client ID
 	  cached.api_valid = true; // twitch connected.
 	  cached.broadcaster_login = resp.login; // username
