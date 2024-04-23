@@ -25,7 +25,7 @@ async function clip() {
 		+cached.broadcaster_id,{
 		 method: "POST",
 			headers: {
-				Authorization: "Bearer " + config.MY_API_TOKEN,
+				Authorization: "Bearer " + config.YOUROAUTH,
 				"Client-ID": cached.api_clientid,
 				"Content-Type": "application/json"
 		},}) 
@@ -41,6 +41,9 @@ async function clip() {
 		// error handling for responses
 		if(clip_resp["error"] == "Not Found") 
 			$$.err("⚠ You cannot clip an Offline Channel!! :<");
+		if(clip_resp["error"] == "Unauthorized") 
+			$$.err("⚠ The passed Oauth token, "+
+			"or lack there of was invalid :<");
 		if(clip_resp == undefined)
 			$$.err("Error, clip response was nothing");
 		
@@ -83,7 +86,7 @@ async function mark(desc) {
 		+cached.broadcaster_id,{
 		 method: "POST",
 			headers: {
-				Authorization: "Bearer " + config.MY_API_TOKEN,
+				Authorization: "Bearer " + config.YOUROAUTH,
 				"Client-ID": cached.api_clientid,
 				"Content-Type": "application/json",
 		},
@@ -101,7 +104,9 @@ async function mark(desc) {
 		// error handling for responses
 		if(mark_resp["error"] == "Not Found") 
 			$$.err("⚠ You cannot mark an Offline Channel!! :<");
-
+		if(clip_resp["error"] == "Unauthorized") 
+			$$.err("⚠ The passed Oauth token, "+
+			"or lack there of was invalid :<");
 		if(mark_resp == undefined)
 			$$.err("Error, mark response was nothing");
 
