@@ -18,8 +18,10 @@ var settings = {
 	chat_on: true,
 	chat:  {
 		emotes_on: true, // wobblewal will keep emotes as text
-		// wobblewall will shorten names with _ or spaces
+		// wobblewall will shorten names with _ - or spaces
 		shorten_names: true, 
+		/* should elements be colored after user chosen colors from twitches API */
+		twitch_colors: true,
 	},
 	
 	/* on-screen video-player/image display settings*/

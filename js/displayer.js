@@ -123,6 +123,10 @@ function onPlayerStateChange(event) {
 	$$.log(event.data);
     if (event.data == YT.PlayerState.ENDED  
 		|| event.data == YT.PlayerState.CUED) {
+		
+		/* fold displayer away when video completes */
+		disp.toggle();
+
 		if(widget.Unpause == true){
 			widget.play();
 			widget.Unpause = false;

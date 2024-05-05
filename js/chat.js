@@ -72,7 +72,7 @@ async function addMsg(message, user, isCommand, command, extra) {
 		returnMessage = ":"+command+" "+message;	
 
 	if(settings.chat.shorten_names == true) {
-		let res = user.displayName.split(/[_\s]/);
+		let res = user.displayName.split(/[_-\s]/);
 		usrname = res[0];
 	}
 	// add emotes to message if there are any
@@ -112,11 +112,14 @@ async function addMsg(message, user, isCommand, command, extra) {
 	msgText.innerHTML = returnMessage;
 
 	// do in CSS instead
-	
-	//msgText.style="color:"+user.color+";";
-	//chatborder.style="border-color:"+user.color+";";
-	//username.style="color:"+user.color+";margin-left:5px;";
-	//profileIMG.style="border-color:"+user.color+";";
+
+	if(settings.chat.twitch_colors == true){
+		msgText.style="color:"+user.color+";";
+		chatborder.style="border-color:"+user.color+";";
+		username.style="color:"+user.color+";margin-left:5px;";
+		profileIMG.style="border-color:"+user.color+";";
+	}
+
 
 	userdatadiv.append(profileIMG);
 	userdatadiv.append(username);

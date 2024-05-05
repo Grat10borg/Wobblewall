@@ -53,7 +53,7 @@ if(widget.elem_music != undefined || settings.musicbox_on == false) {
 
 		$$.log(widget.music_json);
 		source.src= "custom/music/"+widget.music_json["music"][rando];
-		p.innerHTML = music["music"][rando];
+		p.innerHTML = "Playing: "+music["music"][rando];
 		}
 
 
@@ -91,8 +91,8 @@ if(widget.elem_music != undefined || settings.musicbox_on == false) {
 			$$.id("musicSource").src = 
 			"custom/music/"+widget.music_json["music"][rando];
 
-			$$.id("musicTitle").innerHTML = widget.music_json[
-			"music"][rando]
+			$$.id("musicTitle").innerHTML = "Playing: "+
+			widget.music_json["music"][rando]
 			
 			}
 
