@@ -57,14 +57,14 @@ setTimeout(updateFollowers, 5000);
 
 async function updateFollowers() {
 	// get the most recent follower, and only return one follower
-	let follower =	await $$.api("https://api.twitch.tv/helix/channels/"+
-	"followers?broadcaster_id="+cached.broadcaster_id+"&first=1", false);
+//	let follower =	await $$.api("https://api.twitch.tv/helix/channels/"+
+//	"followers?broadcaster_id="+cached.broadcaster_id+"&first=1", false);
 
-	$$.log(follower["data"][0]["user_name"]);
+//	$$.log(follower["data"][0]["user_name"]);
 
-	let username = follower["data"][0]["user_name"];
+//	let username = follower["data"][0]["user_name"];
 
-	$$.id("follow-text").innerHTML=username+" has followed!";
+//	$$.id("follow-text").innerHTML=username+" has followed!";
 } 
 
 

@@ -26,8 +26,12 @@ if(widget.elem_time != undefined || settings.clock_on == false) {
 
 /* code for music player */
 if(widget.elem_music != undefined) {
-	if (settings.musicbox_on == false) {
+	if (settings.musicbox_on != false) {
+
+
   		async function musicplayer() {
+		$$.log("ping")
+
 			let text = await $$.txt("custom/music.json")
 			.then((response) => {
 			let music = JSON.parse(response);
@@ -101,6 +105,7 @@ if(widget.elem_music != undefined) {
 			widget.elem_music_player.load();
 
 		};
+
 	  })
 	}
  	// run function
