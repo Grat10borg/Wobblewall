@@ -34,9 +34,38 @@ let cached = {
 	//betterTVemotes: [], // contain better TV emotes
 };
 
+updateFollowers(); 
 
 // init ComfyJS
 ComfyJS.Init(config.BOTLOGIN, config.BOTOAUTH, config.TWITCH_LOGIN);
+
+	/* what to do when event is triggered */
+
+// run everytime someone subs
+ComfyJS.onSub = (user, message, subTierInfo, extra) => {
+	$$.id("sub").innerHTML = "";
+	$$.id("sub").append($$.make("p").innerHTML = user+" subscribed.");	
+}
+
+/* OnFollow events are only implimented on event ways that
+* need a backend server, this is a *good enough* solution for now... */
+// to help vote, and make your voice heard.
+// https://discuss.dev.twitch.com/t/api-request-add-new-follower-topic-to-pubsub/26852/2
+
+// update every 5 minutes, by default
+setTimeout(updateFollowers, 5000);
+
+async function updateFollowers() {
+	// get the most recent follower, and only return one follower
+	let follower =	await $$.api("https://api.twitch.tv/helix/channels/"+
+	"followers?broadcaster_id="+cached.broadcaster_id+"&first=1", false);
+
+	$$.log(follower["data"][0]["user_name"]);
+
+	let username = follower["data"][0]["user_name"];
+
+	$$.id("follow-text").innerHTML=username+" has followed!";
+} 
 
 
 // runs everytime someone posts a message in twitch chat
@@ -214,6 +243,7 @@ ComfyJS.onCommand = (user, command, message, flags, extra) => {
 }
 
 
+/* Functions */
 
 // fetch profile pictures from the twitch api
 async function fetchProfile(username, flags, extra) {
@@ -235,6 +265,8 @@ async function fetchProfile(username, flags, extra) {
 		  		      ...channelBadges["data"]]; 
 	 }
 	
+	 $$.log(res);
+
 	 // log user data
 	 let user_log = {
 		"profile_img": res["profile_image_url"],
@@ -273,3 +305,6 @@ function cleanMsg(message) {
 
 	return message;
 }
+
+
+

@@ -48,25 +48,29 @@
 
 	/* desktop colors */ 
 
-	--chat_bg: rgba(18, 22, 59, 0.5);
+	--chat_bg: linear-gradient(#19092A, #162B3E);
+	--displayer-bg: #1E708E;
 
 	--taskbar_bg: var(--main_color_darker);
 	--taskbar_seperator: var(--main_color); 
 }
 
-.top {
-	display: flex;
-}
-
-.display {
-	display: flex;
-	width: calc(var(--screen_width) - 20%);
-	height: calc(var(--screen_height) - 5vh);
+.desktop {
+	width: 100vw;
+	height: 100vh;
 }
 
 .chat {
-	width: calc(var(--screen_width) - 80%);
-	height: calc(var(--screen_height) - 5vh);
+	/* add this through other means */
+	width: 350px;
+	height: 470px;
+	border-radius: 5%;
+	z-index: 2;
+
+	position: absolute;
+	left: 82%;
+	top: 4%;
+
 	background: var(--chat_bg);
 	display: flex;
   	-webkit-box-orient: vertical;
@@ -93,6 +97,7 @@
 	border-left: 5px solid;
 	border-radius: 5px 0px 0px 5px;
 	padding-left: 10px;	
+	margin-left: 10px;
 }
 
 .chat ul li .user-data-line {
@@ -197,19 +202,6 @@
   }
 }
 
-.taskbar {
-	width: var(--screen_width);
-
-	height: calc(var(--screen_height) - 95vh); /* = 5vh */
-	background: var(--taskbar_bg);
-	display: flex;
-	justify-content: between;
-}
-
-.taskbar > {
-	display: block;
-}
-
 .clock {
 	width: 20%;
 	height: 100%;
@@ -223,20 +215,52 @@
 	color: white;
 }
 
-#music {
-	height: 100%;
-	width: 30%;	
-	display: flex;
+.label { 
+	height: 50px;
+	width: 245px;	
+	
+	/*
+	background-color: darkblue;
+	*/
+
+	position: absolute;
+    margin: 0 auto;
+    white-space: nowrap;
+    overflow: hidden;
+    box-sizing: border-box;
+    display: inline-flex;    
 	align-items: center;
 	justify-content: center;	
 }
 
+.label p {
+	color: white;	
+	font-size: 18px;
+}
+
+#heart {
+	left: 775px;
+	top: 1010px;
+}
+
+#sparkle {
+	left: 1110px;
+	top: 1010px;
+}
+
+#music {
+	left: 440px;
+	top: 1010px;
+}
+
 #music p {
 	margin: auto;
-	display: block;
-	color: white;
-	font-size: 18px;
 	text-align: center;
+
+    display: flex;        
+    flex-basis: 100%;
+    animation: marquee 8s linear infinite;
+    animation-play-state: running;
 }
 
 /* hide music player outside of view*/
@@ -244,6 +268,45 @@
 	opacity: 0%;
 	position: absolute;
 	top: 10px;
+}
+
+#music audio:hover { opacity: 50%; }
+
+	/* marquee CSS, used for longer text that needs to loop*/
+.marquee {
+    width: 100%;
+    margin: 0 auto;
+    white-space: nowrap;
+    overflow: hidden;
+    box-sizing: border-box;
+    display: inline-flex;    
+}
+
+.marquee span {
+    display: flex;        
+    flex-basis: 100%;
+    animation: marquee 5s linear infinite;
+    animation-play-state: running;
+}
+
+@keyframes marquee {
+    0% {
+        transform: translate(0%, 0);
+    }    
+    50% {
+        transform: translate(-100%, 0);
+    }
+    50.001% {
+        transform: translate(100%, 0);
+    }
+    100% {
+        transform: translate(0%, 0);
+    }
+}
+@keyframes marquee-reset {
+    0% {
+        transform: translate(0%, 0);
+    }  
 }
 
 	/*turn overlay chat only*/
@@ -295,13 +358,35 @@
 
 /* content displayer that comes down */
 .display div {
-	width: 100%;
-	height: 100%;
+	height: 980px;
+	width: 1600px;
+
+	z-index: 1;
+	position: absolute;
+	left: 0.5%;
+	top: 1%;
+
 	display: flex;
 	justify-content: center;
-	background: var(--main_color_lighter);
+	background: var(--displayer-bg);
+	
 	transform: translateY(-100%);
 	transition: ease 4s;
+
+}
+
+#displayer-inner {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+
+/* make sure to make rounding similar to overlay pngs rounding */
+#displayer-inner iframe {
+	width: 95%;
+	height: 95%;
+	border-radius: 15px;
 }
 
 .display .disp-show {
