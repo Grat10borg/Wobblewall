@@ -25,35 +25,35 @@ if(widget.elem_time != undefined || settings.clock_on == false) {
 }
 
 /* code for music player */
-if(widget.elem_music != undefined || settings.musicbox_on == false) {
-  async function musicplayer() {
-	let text = await $$.txt("custom/music.json")
-	.then((response) => {
-		let music = JSON.parse(response);
-		console.log(music)
-		widget.music_json = music;
+if(widget.elem_music != undefined) {
+	if (settings.musicbox_on == false) {
+  		async function musicplayer() {
+			let text = await $$.txt("custom/music.json")
+			.then((response) => {
+			let music = JSON.parse(response);
+			widget.music_json = music;
 		
-		let audio = $$.make("audio");
-		let source = $$.make("source");
+			let audio = $$.make("audio");
+			let source = $$.make("source");
 
-		/* put name of song on overlay */
-		let p = $$.make("p");
-		p.id = "musicTitle";
+			/* put name of song on overlay */
+			let p = $$.make("p");
+			p.id = "musicTitle";
 
-		if(settings.musicbox_randomize == false) {
-		source.src = "custom/music/"+widget.music_json["music"
-		][widget.current_song];
+			if(settings.musicbox_randomize == false) {
+			source.src = "custom/music/"+widget.music_json["music"
+			][widget.current_song];
 
-		p.innerHTML = music["music"][widget.current_song];
-		widget.current_song++;
-		}
-		else {
-		let rando = Math.floor(Math.random()
-		* widget.music_json["music"].length);
+			p.innerHTML = music["music"][widget.current_song];
+			widget.current_song++;
+			}
+			else {
+			let rando = Math.floor(Math.random()
+			* widget.music_json["music"].length);
 
-		$$.log(widget.music_json);
-		source.src= "custom/music/"+widget.music_json["music"][rando];
-		p.innerHTML = "Playing: "+music["music"][rando];
+			$$.log(widget.music_json);
+			source.src= "custom/music/"+widget.music_json["music"][rando];
+			p.innerHTML = "Playing: "+music["music"][rando];
 		}
 
 
@@ -101,10 +101,11 @@ if(widget.elem_music != undefined || settings.musicbox_on == false) {
 			widget.elem_music_player.load();
 
 		};
-	})
+	  })
+	}
+ 	// run function
+ 	musicplayer();
   }
- // run function
- musicplayer();
 }
 
 // pause muisc player
