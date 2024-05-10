@@ -45,6 +45,11 @@ ComfyJS.Init(config.BOTLOGIN, config.BOTOAUTH, config.TWITCH_LOGIN);
 ComfyJS.onSub = (user, message, subTierInfo, extra) => {
 	$$.id("sub").innerHTML = "";
 	$$.id("sub").append($$.make("p").innerHTML = user+" subscribed.");	
+
+	if(settings.alertbox_on) {
+		// send data to alertbox file
+		alerts.ding(subTierInfo, "sub", user);
+	}
 }
 
 /* OnFollow events are only implimented on event ways that
@@ -57,14 +62,19 @@ setTimeout(updateFollowers, 5000);
 
 async function updateFollowers() {
 	// get the most recent follower, and only return one follower
-//	let follower =	await $$.api("https://api.twitch.tv/helix/channels/"+
-//	"followers?broadcaster_id="+cached.broadcaster_id+"&first=1", false);
+	let follower =	await $$.api("https://api.twitch.tv/helix/channels/"+
+	"followers?broadcaster_id="+cached.broadcaster_id+"&first=1", false);
 
-//	$$.log(follower["data"][0]["user_name"]);
+	$$.log(follower["data"][0]["user_name"]);
 
-//	let username = follower["data"][0]["user_name"];
+	let user = follower["data"][0]["user_name"];
 
-//	$$.id("follow-text").innerHTML=username+" has followed!";
+	$$.id("follow-text").innerHTML=username+" has followed!";
+
+	if(settings.alertbox_on) {
+		// send data to alertbox file
+		alerts.ding("", "follow", user);
+	}
 } 
 
 
@@ -156,7 +166,7 @@ ComfyJS.onCommand = (user, command, message, flags, extra) => {
 			chat.clear();
 			break;
 
-		/* taskbar */	
+		/* widgets */	
 		//	play music player 
 		case "music":
 			if(approved && settings.musicbox_on == true)
@@ -207,9 +217,17 @@ ComfyJS.onCommand = (user, command, message, flags, extra) => {
 			break;
 		// set value between 0 (muted) and 100 (max)
 		case "set":
-			if(approved && settings. displayer_on == true)
+			if(approved && settings.displayer_on == true)
 			disp.setVolume(message);
 			break;
+
+		/* alertbox */
+		// test alertbox, useful in testing 
+		case "alert":
+			if(approved && settings.alertbox_on == true)
+			alerts.ding("", "follow", cached.broadcaster_login);
+			break;
+		
 
 		/* bot */
 		// clip your/or specifed channel 30/27~ sec back

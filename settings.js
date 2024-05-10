@@ -30,6 +30,26 @@ var settings = {
 
 	},
 
+
+	alertbox_on: true,
+	// $USER replaces with the user name
+	alerts: {
+		follow_msg: "$USER has been assmilated",
+		follow_img: "custom/blop_spin_bg.gif",
+
+		sub_msg: "$USER just subbed, thats very cool :3",
+		sub_img: "",
+		
+		cheer_msg: "$USER just cheered with $AMOUNT",
+		cheer_img: "",
+		
+		host_msg: "$USER just hosted with $AMOUNT viewers",
+		host_img: "",
+		
+		raid_msg: "$USER just raided us!! be welcoming now!",
+		raid_msg: "",
+	},
+
 	/* bot that does !lurk or !clip commands */
 	tbot_on: true,
 	tbot: {

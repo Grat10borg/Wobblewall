@@ -1,0 +1,11 @@
+what are these files?
+
+chat.js = code for Wobblewalls chatbox
+alert.js = code for Wobblewalls alertbox
+displayer.js = code for the Displayer, slash media player
+widgets.js = code for smaller things that don't needs its own file, (clock, follower, sub counter) and the music box
+
+tbot.js = code for the built in bot and its commands.
+
+dom.js = is for shorthand code that makes using the DOM easier
+commands.js = is the main file where comfy.js is initialized and all calls are from.
