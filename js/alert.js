@@ -41,7 +41,7 @@ function ding(data, type, user) {
 	}
 
 	/* when someone raids the channel */
-	if(type == "hosted") {
+	if(type == "host") {
 		image = settings.alerts.host_img;
 		text = settings.alerts.host_msg;
 	}

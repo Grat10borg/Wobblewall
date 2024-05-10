@@ -41,17 +41,6 @@ ComfyJS.Init(config.BOTLOGIN, config.BOTOAUTH, config.TWITCH_LOGIN);
 
 	/* what to do when event is triggered */
 
-// run everytime someone subs
-ComfyJS.onSub = (user, message, subTierInfo, extra) => {
-	$$.id("sub").innerHTML = "";
-	$$.id("sub").append($$.make("p").innerHTML = user+" subscribed.");	
-
-	if(settings.alertbox_on) {
-		// send data to alertbox file
-		alerts.ding(subTierInfo, "sub", user);
-	}
-}
-
 /* OnFollow events are only implimented on event ways that
 * need a backend server, this is a *good enough* solution for now... */
 // to help vote, and make your voice heard.
@@ -77,6 +66,38 @@ async function updateFollowers() {
 	}
 } 
 
+// run everytime someone subs
+ComfyJS.onSub = (user, message, subTierInfo, extra) => {
+	$$.id("sub").innerHTML = "";
+	$$.id("sub").append($$.make("p").innerHTML = user+" subscribed.");	
+
+	if(settings.alertbox_on) {
+		// send data to alertbox file
+		alerts.ding(subTierInfo, "sub", user);
+	}
+}
+
+	/* cheers are eg, when someone donates bits */
+ComfyJS.onCheer = (user, message, bits, flags, extra) => {
+	if(settings.alertbox_on) {
+		// send data to alertbox file
+		alerts.ding(bits, "cheer", user);
+	}
+}
+
+ComfyJS.onRaid = (user, viewers, extra) => {
+	if(settings.alertbox_on) {
+		// send data to alertbox file
+		alerts.ding(viewers, "raid", user);
+	}
+}
+
+ComfyJS.onHosted = (user, viewers, autohost, extra) => {
+	if(settings.alertbox_on) {
+		// send data to alertbox file
+		alerts.ding(viewers, "host", user);
+	}
+}
 
 // runs everytime someone posts a message in twitch chat
 ComfyJS.onChat = (user, message, flags, self, extra) => {
