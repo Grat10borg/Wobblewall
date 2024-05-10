@@ -22,6 +22,7 @@ let cached = {
 	clip_count: 0, // clips clipped
 	mark_count: 0, // stream markers marked
 	word_count: 0,
+	newest_follower: "",
 	
 	// fetch profile pictures from the twitch api
 	fetchProfile: fetchProfile.bind($),
@@ -47,22 +48,32 @@ ComfyJS.Init(config.BOTLOGIN, config.BOTOAUTH, config.TWITCH_LOGIN);
 // https://discuss.dev.twitch.com/t/api-request-add-new-follower-topic-to-pubsub/26852/2
 
 // update every 5 minutes, by default
-setTimeout(updateFollowers, 5000);
+setTimeout(updateFollowers, 1000);
 
 async function updateFollowers() {
-	// get the most recent follower, and only return one follower
-	let follower =	await $$.api("https://api.twitch.tv/helix/channels/"+
-	"followers?broadcaster_id="+cached.broadcaster_id+"&first=1", false);
+	if(cached.broadcaster_id != "" && cached.api_clientid != "") {
+		// get the most recent follower, and only return one follower
+		let follower =	await $$.api("https://api.twitch.tv/helix/"+
+		"channels/followers?broadcaster_id="
+		+cached.broadcaster_id+"&first=1", false);
 
-	$$.log(follower["data"][0]["user_name"]);
+		let user = follower["data"][0]["user_name"];
 
-	let user = follower["data"][0]["user_name"];
+		// update follower widget
+		$$.id("follow-text").innerHTML=user+" has followed!";
 
-	$$.id("follow-text").innerHTML=username+" has followed!";
+		// get most recent follower
+		if(cached.newest_follower == "") 
+			cached.newest_follower = user;
 
-	if(settings.alertbox_on) {
-		// send data to alertbox file
-		alerts.ding("", "follow", user);
+		// trigger if newest follower isn't the same as saved follower
+		else if(cached.newest_follower != user) {
+
+			if(settings.alertbox_on) {
+				// send data to alertbox file
+				alerts.ding("", "follow", user);
+			}
+		}
 	}
 } 
 
