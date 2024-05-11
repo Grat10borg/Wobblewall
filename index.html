@@ -10,6 +10,10 @@
 	<body>
 		<div class="desktop">
 			<div id="chat" class="chat"></div>
+			<div class="hide" id="alert">
+				<img id="alert-img" src="custom/blop_spin_bg.gif">
+				<p id="alert-text">user is now following!</p>
+			</div>
 			<div id="displayer" class="display">
 				<div>
 
@@ -18,11 +22,11 @@
 			<div id="music" class="music label">
 
 			</div>
-			<div id="heart" class="label">
-				<p>To be added</p>
+			<div id="follow" class="label">
+				<p id="follow-text">user has followed!</p>
 			</div>
-			<div id="sparkle" class="label">
-				<p>To be added</p>
+			<div id="sub" class="label">
+				<p id="sub-text">no one has subbed yet..</p>
 			</div>
 		</div>    
 	<!-- settings & libraries -->
@@ -35,6 +39,7 @@
 	<!-- stream widgets -->
 	<script src="js/chat.js"></script>
 	<script src="js/displayer.js"></script>
+	<script src="js/alert.js"></script>
 	<script src="js/widgets.js"></script>
 	<script src="js/tbot.js"></script>
 

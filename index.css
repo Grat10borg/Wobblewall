@@ -27,7 +27,18 @@
   font-weight: bold;
   font-style: italic;
 }
+	
+/* secondary font */
 
+@font-face {
+  font-family: 'Montserrat';
+  src: url(montserratregular.ttf);
+}
+@font-face {
+  font-family: 'Montserrat';
+  src: url(montserratbold.ttf);
+  font-weight: bold;
+}
 
 :root {
 	--screen_width: 100vw;
@@ -53,6 +64,15 @@
 
 	--taskbar_bg: var(--main_color_darker);
 	--taskbar_seperator: var(--main_color); 
+}
+
+.hide {
+	opacity: 0;
+}
+.show {
+	opacity: 1;
+	transition: opacity;
+	animation: alert 10s forwards;
 }
 
 .desktop {
@@ -235,15 +255,16 @@
 
 .label p {
 	color: white;	
+  	font-family: 'Montserrat';
 	font-size: 18px;
 }
 
-#heart {
+#follow {
 	left: 775px;
 	top: 1010px;
 }
 
-#sparkle {
+#sub {
 	left: 1110px;
 	top: 1010px;
 }
@@ -253,13 +274,13 @@
 	top: 1010px;
 }
 
-#music p {
+#music p, #follow p, #sub p {
 	margin: auto;
 	text-align: center;
 
     display: flex;        
     flex-basis: 100%;
-    animation: marquee 8s linear infinite;
+    animation: marquee 18s ease-in-out infinite;
     animation-play-state: running;
 }
 
@@ -399,3 +420,42 @@
 	transform-origin: bottom;
 }
 
+#alert {
+	z-index: 2;
+	position: absolute;
+	left: 580px;
+	top: 150px;
+
+	width: 450px;
+	height: 300px;
+}
+
+#alert img {
+	margin: auto;
+	display: flex;
+	width: 50%;
+
+}
+
+#alert p {
+	color: white;
+	background: gray;
+
+	font-weight: bold;
+	font-size: 35px;
+}
+
+@keyframes alert {
+	0% {
+		transition: opacity 200ms;
+		opacity: 0;
+	}
+	20% {
+		transition: opacity 800ms;
+		opacity: 1;
+	}
+	100% {
+		transition: opacity 200ms;
+		opacity: 0;
+	}
+}

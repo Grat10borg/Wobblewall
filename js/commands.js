@@ -48,9 +48,11 @@ ComfyJS.Init(config.BOTLOGIN, config.BOTOAUTH, config.TWITCH_LOGIN);
 // https://discuss.dev.twitch.com/t/api-request-add-new-follower-topic-to-pubsub/26852/2
 
 // update every 5 minutes, by default
-setTimeout(updateFollowers, 1000);
+setTimeout(updateFollowers, 5000);
+setInterval(updateFollowers, 50000);
 
 async function updateFollowers() {
+	$$.log("in update followers")
 	if(cached.broadcaster_id != "" && cached.api_clientid != "") {
 		// get the most recent follower, and only return one follower
 		let follower =	await $$.api("https://api.twitch.tv/helix/"+
@@ -60,6 +62,9 @@ async function updateFollowers() {
 		let user = follower["data"][0]["user_name"];
 
 		// update follower widget
+		/* this offsetWidth helps delay the function enough
+	 	* to fix JS not changing the text on the p element*/
+		alerts.offsetWidth;	
 		$$.id("follow-text").innerHTML=user+" has followed!";
 
 		// get most recent follower
@@ -67,12 +72,10 @@ async function updateFollowers() {
 			cached.newest_follower = user;
 
 		// trigger if newest follower isn't the same as saved follower
-		else if(cached.newest_follower != user) {
-
-			if(settings.alertbox_on) {
-				// send data to alertbox file
-				alerts.ding("", "follow", user);
-			}
+		else if(cached.newest_follower != user && settings.alertbox_on) {
+			// send data to alertbox file
+			alerts.ding("", "follow", user);
+			cached.newest_follower = user;
 		}
 	}
 } 
