@@ -65,6 +65,7 @@ async function updateFollowers() {
 		/* this offsetWidth helps delay the function enough
 	 	* to fix JS not changing the text on the p element*/
 		alerts.offsetWidth;	
+		if($$.id("follow-text"))
 		$$.id("follow-text").innerHTML=user+" has followed!";
 
 		// get most recent follower

@@ -12,15 +12,23 @@ var widget = {
 }
 
 /* code for onscreen clock  */
-if(widget.elem_time != undefined || settings.clock_on == false) {
+if(widget.elem_time != undefined &&
+   settings.widget.clock_on != false) {
+	$$.log(settings);
 	setInterval(() => {
-		let date = new Date().toLocaleTimeString();
-		let splits = date.split(":");
-		let frontNo = splits[0];
-		if(splits[0][1] == null)
-		frontNo = "0"+splits[0];
-		let PMAM = splits[2].split(" ");
-		widget.elem_time.innerHTML = frontNo+":"+splits[1]+" "+PMAM[1]
+		let date = new Date();
+		let text = settings.widget.clock_before;
+		text = text+$$.date(date, settings.widget.clock_format);
+		text = text + settings.widget.clock_after;
+		widget.elem_time.innerHTML = text;	
+
+		//let date = new Date().toLocaleTimeString();
+		//let splits = date.split(":");
+		//let frontNo = splits[0];
+		//if(splits[0][1] == null)
+		//frontNo = "0"+splits[0];
+		//let PMAM = splits[2].split(" ");
+		//widget.elem_time.innerHTML = frontNo+":"+splits[1]+" "+PMAM[1]
 	}, 1000)
 }
 
@@ -28,9 +36,8 @@ if(widget.elem_time != undefined || settings.clock_on == false) {
 if(widget.elem_music != undefined) {
 	if (settings.musicbox_on != false) {
 
-
   		async function musicplayer() {
-		$$.log("ping")
+			$$.log("ping")
 
 			let text = await $$.txt("custom/music.json")
 			.then((response) => {

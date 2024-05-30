@@ -20,7 +20,8 @@ var settings = {
 		emotes_on: true, // wobblewal will keep emotes as text
 		// wobblewall will shorten names with _ - or spaces
 		shorten_names: true, 
-		/* should elements be colored after user chosen colors from twitches API */
+		/* should elements be colored after user chosen colors
+		 * from twitches API */
 		twitch_colors: true,
 	},
 	
@@ -61,7 +62,12 @@ var settings = {
 	},
 
 	/* widgets that do misc things, like a music player or a clock*/
-	clock_on: true,
+	widget: {
+		clock_on: true,
+		clock_before: "", // text before date string
+		clock_format: "G:i", // JS date formating
+		clock_after: " - CEST (USC+2)",  // text after date string
+	},
 	musicbox_on: true,
 	musicbox_randomize: true,
 }

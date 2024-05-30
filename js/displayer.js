@@ -2,7 +2,7 @@
 
 let disp = {
 	elem: $$.id("displayer"),
-	displayer: $$.id("displayer").children[0],
+	displayer: "",
 	show: false, // by default displayer isn't shown
 
 	// displayer basic functionability

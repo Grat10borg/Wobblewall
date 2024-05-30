@@ -15,6 +15,7 @@ wait: wait.bind($),
 api: api.bind($), 
 api_approve: api_approve.bind($), // validate twitch token
 txt: txt.bind($),
+date: date_format.bind($),
 
 log: console.log,
 err: Olog.bind($),
@@ -122,6 +123,70 @@ async function txt(path) {
   let text = $$.id(path).innerHTML;
   $$.id(path).outerHTML = ""; // remove textarea again
   return text;
+}
+
+/* sorta of the PHP date_format function */
+// https://www.w3schools.com/PHP/func_date_date_format.asp
+function date_format(date, dateString) {
+
+	// turn "d" into the date with leading zero 01-31
+	let res = date.getDate();
+	if(res < 10)
+		res = "0"+res;
+	dateString = dateString.replaceAll("d", res);	
+	
+	// turn "j" into the date 1-31
+	dateString = dateString.replaceAll("j", date.getDate());	
+
+	// turn "n" into current month (1-12)
+	dateString = dateString.replaceAll("n", (date.getMonth()+1));
+
+	// turn "m" into numeric month with leading zero
+	res = date.getMonth();
+	if(res < 10)
+		res = "0"+res;
+	dateString = dateString.replaceAll("n", res);
+
+	// turn "Y" into a four digit year (2003)
+	dateString = dateString.replaceAll("Y", date.getFullYear());
+
+	// turn "y" into a two digit year (03)
+	res = date.getFullYear()[2]+date.getFullYear()[3];
+	dateString = dateString.replaceAll("y", res);
+
+	// turn "w" into numeric repressation of the weekday (0-6)
+	dateString = dateString.replaceAll("w", date.getDay());
+
+	// turn "G" into a 24 hour clock 
+	res = date.getHours();
+	res++;
+	if(res < 10)
+		res = "0"+res;
+	dateString = dateString.replaceAll("G", res);
+
+	// turn "i" into minutes
+	res = date.getMinutes();
+	if(res < 10)
+		res = "0"+res;
+	dateString = dateString.replaceAll("i", res);
+
+	// turn "s" into seconds
+	res = date.getSeconds();
+	if(res < 10)
+		res = "0"+res;
+	dateString = dateString.replaceAll("s", res);
+
+	// turn "u" into miliseconds 
+	res = date.getMilliseconds();
+	if(res < 10)
+		res = "0"+res;
+	dateString = dateString.replaceAll("u", res);
+
+	// turn "U" into milliseconds since Epoch
+	dateString = dateString.replaceAll("U", date.getTime());
+
+	$$.log(dateString);
+	return dateString;
 }
 
 function Olog(message) {
