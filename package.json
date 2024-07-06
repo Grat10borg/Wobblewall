@@ -9,6 +9,7 @@
   "author": "Grat10borg",
   "license": "ISC",
   "dependencies": {
+    "beat-beat-js": "^0.0.0",
     "comfy.js": "^1.1.16"
   }
 }

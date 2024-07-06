@@ -1,0 +1,18 @@
+export default class BeatBeat {
+    private context;
+    private name;
+    private filterFrequency;
+    private peakGain;
+    private threshold;
+    private sampleSkip;
+    private minAnimationTime;
+    isPlaying: boolean;
+    private offlineContext;
+    private buffer;
+    private songData;
+    constructor(context: AudioContext, name: string, filterFrequency?: number, peakGain?: number, threshold?: number, sampleSkip?: number, minAnimationTime?: number);
+    load(): Promise<{}>;
+    play(cb: any): void;
+    private analyze;
+    private animate;
+}
