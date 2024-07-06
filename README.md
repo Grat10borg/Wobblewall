@@ -39,4 +39,4 @@ some test commands to test specific widgets are:
 some personalization options can be found in `settings.js`.
 
 ## Commands 
-Wobblewall commands can be triggered by typing `!<command-name>`  a list of commands can be found [here]()
+Wobblewall commands can be triggered by typing `!<command-name>`  a list of commands can be found [here](https://github.com/Grat10borg/Wobblewall/wiki/Wobblewall-beta-0.1-%E2%80%90-Commands)
